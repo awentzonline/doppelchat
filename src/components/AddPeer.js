@@ -1,5 +1,8 @@
 import React from 'react';
+
+import {TextField} from 'material-ui';
 import PeerActions from 'actions/PeerActions';
+
 
 class AddPeerComponent extends React.Component {
   constructor(props) {
@@ -12,10 +15,13 @@ class AddPeerComponent extends React.Component {
     return (
       <div>
         <form onSubmit={this.onSubmit.bind(this)}>
-          <input type="text"
-            placeholder="Peer ID"
+          <TextField
+            hintText="Peer ID"
+            floatingLabelText="Add a peer"
+            multiLine={false}
             value={this.state.peerId}
             onChange={this.onTextChanged.bind(this)}
+            fullWidth={true}
              />
         </form>
       </div>

@@ -12,11 +12,11 @@ class PeerManager extends EventEmitter {
   constructor() {
     super();
     this.Events = Events;
+    this.calls = {};
     this.dataConnections = {};
     this.connected = false;
     this.peer = null;
     this.status = 'Inactive';
-    this.calls = {};
   }
   start(options_) {
     var options = options_ || {};
@@ -112,7 +112,6 @@ class PeerManager extends EventEmitter {
     call.on('error', this._onCallError.bind(this, peerId));
   }
   _onCallStream(peerId) {
-    console.log(peerId);
     this.emit(Events.PEERS_CHANGE_EVENT);
   }
   _onCallClose(peerId) {

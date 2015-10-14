@@ -1,4 +1,5 @@
 import React from 'react';
+import {Paper} from 'material-ui';
 import PeerView from 'components/PeerView';
 import PeerStore from 'stores/PeerStore';
 
@@ -24,18 +25,20 @@ class PeerList extends React.Component {
   render() {
     var peerItems = this.state.calls.map(renderPeerItem);
     return (
-      <ul className="peerList">
+      <div className="peerList">
         {peerItems}
-      </ul>
+      </div>
     );
   }
 }
 
 function renderPeerItem(call) {
   return (
-    <li>
-      <PeerView peerCall={call} />
-    </li>
+    <div className="col-xs-3">
+      <Paper zDepth={3}>
+        <PeerView peerCall={call} />
+      </Paper>
+    </div>
   );
 }
 

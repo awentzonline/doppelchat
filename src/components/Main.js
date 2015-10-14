@@ -1,12 +1,15 @@
 require('normalize.css');
+require('flexboxgrid');
 require('styles/App.css');
 
 import React from 'react';
 
+import {Paper} from 'material-ui';
+
 import AddPeer from 'components/AddPeer';
 import P2PStatus from 'components/P2PStatus';
 import PeerList from 'components/PeerList';
-import VideoStream from 'components/VideoStream';
+import UserVideoStream from 'components/UserVideoStream';
 
 import UserMediaStore from 'stores/UserMediaStore';
 import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
@@ -19,28 +22,25 @@ class AppComponent extends React.Component {
       userStream: null
     };
   }
-  _userStreamChanged() {
-    this.setState({
-      userStream: UserMediaStore.stream
-    });
-  }
-  componentDidMount() {
-    UserMediaStore.addListener('change', this._userStreamChanged.bind(this));
-  }
-  componentWillUnmount() {
-    UserMediaStore.removeListener('change', this._userStreamChanged.bind(this));
-  }
   render() {
     return (
-      <div className="appContainers">
-        <div className="userStream">
-          <VideoStream stream={this.state.userStream} muted={true}
-              width={125} height={125} />
-          <button onClick={this._acquireUserStream}>Start</button>
+      <div className="layout">
+        <div className="row">
+          <div className="col-xs-4">
+            <Paper zDepth={3}>
+              <UserVideoStream />
+            </Paper>
+            <Paper zDepth={3}>
+              <P2PStatus />
+            </Paper>
+              <Paper zDepth={3}>
+              <AddPeer />
+            </Paper>
+          </div>
+          <div className="col-xs">
+            <PeerList />
+          </div>
         </div>
-        <P2PStatus />
-        <AddPeer />
-        <PeerList />
       </div>
     );
   }
