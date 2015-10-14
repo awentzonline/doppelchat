@@ -49,8 +49,7 @@ class PeerManager extends EventEmitter {
       this.emit(Events.CHANGE_EVENT);
     });
     this.peer.on('call', (call) => {
-      console.log(call)
-      this.calls[call.peer] = call;
+      this._handleNewCall(call);
       call.answer(UserMediaStore.stream);
       this.emit(Events.PEERS_CHANGE_EVENT);
     });
@@ -58,11 +57,7 @@ class PeerManager extends EventEmitter {
   }
   callPeer(peerId) {
     var call = this.peer.call(peerId, UserMediaStore.stream);
-    this.calls[peerId] = call;
-    call.on('stream', (remoteStream) => {
-      console.log(call);
-      this.emit(Events.PEERS_CHANGE_EVENT);
-    });
+    this._handleNewCall(call);
   }
   connectTo(peerId) {
     if (this.dataConnections[peerId] === undefined && peerId != this.peer.id) {
@@ -107,7 +102,27 @@ class PeerManager extends EventEmitter {
       return this.calls[id];
     });
   }
-
+  // mediaConnections
+  _handleNewCall(call) {
+    // add some event handlers to new connections
+    var peerId = call.peer;
+    this.calls[peerId] = call;
+    call.on('stream', this._onCallStream.bind(this, peerId));
+    call.on('close', this._onCallClose.bind(this, peerId));
+    call.on('error', this._onCallError.bind(this, peerId));
+  }
+  _onCallStream(peerId) {
+    console.log(peerId);
+    this.emit(Events.PEERS_CHANGE_EVENT);
+  }
+  _onCallClose(peerId) {
+    delete this.calls[peerId];
+    this.emit(Events.PEERS_CHANGE_EVENT);
+  }
+  _onCallError(peerId, err) {
+    console.log(`Call ${peerId} error: ${err}`);
+  }
+  // dataConnection
   _handleNewConnection(dataConnection) {
     // add some event handlers to new connections
     var peerId = dataConnection.peer;
