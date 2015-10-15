@@ -13,7 +13,7 @@ class AddPeerComponent extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="addPeer">
         <form onSubmit={this.onSubmit.bind(this)}>
           <TextField
             hintText="Peer ID"

@@ -25,7 +25,7 @@ class PeerList extends React.Component {
   render() {
     var peerItems = this.state.calls.map(renderPeerItem);
     return (
-      <div className="peerList">
+      <div className="peerList row">
         {peerItems}
       </div>
     );
@@ -34,7 +34,7 @@ class PeerList extends React.Component {
 
 function renderPeerItem(call) {
   return (
-    <div className="col-xs-3">
+    <div className="col-xs-4">
       <Paper zDepth={3}>
         <PeerView peerCall={call} />
       </Paper>

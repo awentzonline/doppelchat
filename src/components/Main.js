@@ -24,9 +24,9 @@ class AppComponent extends React.Component {
   }
   render() {
     return (
-      <div className="layout">
-        <div className="row">
-          <div className="col-xs-4">
+      <div className="container-fluid layout">
+        <div className="row localUserContainer">
+          <div className="col-md-3 col-xs-4">
             <Paper zDepth={3}>
               <UserVideoStream />
             </Paper>
@@ -37,7 +37,7 @@ class AppComponent extends React.Component {
               <AddPeer />
             </Paper>
           </div>
-          <div className="col-xs">
+          <div className="col-md col-xs">
             <PeerList />
           </div>
         </div>

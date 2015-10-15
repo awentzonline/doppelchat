@@ -13,4 +13,25 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  min-width: 600px;
+}
+
+.userVideoStream {
+  min-height: 150px;
+  padding: 8px;
+}
+
+.p2pStatus {
+  padding: 8px;
+}
+
+.addPeer {
+  padding: 8px;
+}
+
+.peerList {
+  padding: 8px;
+}
+.peerView {
+  margin-bottom: 16px;
 }

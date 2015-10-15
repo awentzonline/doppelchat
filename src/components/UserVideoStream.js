@@ -28,15 +28,19 @@ class UserVideoStream extends React.Component {
   render() {
     if (this.state.userStream) {
       return (
-        <VideoStream stream={this.state.userStream}
-            muted={true} width="100%" height="100%"
-            />
+        <div className="userVideoStream">
+          <VideoStream stream={this.state.userStream}
+              muted={true} width="100%" height="100%"
+              />
+        </div>
       );
     } else {
       return (
-        <FlatButton label="Start Camera"
-            onClick={this._acquireUserStream}
-            />
+        <div className="userVideoStream col-xs xs-center">
+          <FlatButton label="Start Camera"
+              onClick={this._acquireUserStream}
+              />
+        </div>
       );
     }
   }
