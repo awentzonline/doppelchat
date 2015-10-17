@@ -20,7 +20,6 @@ class PeerManager extends EventEmitter {
   }
   start(options_) {
     var options = options_ || {};
-    var key = options.key || 'x6wcgg5nrtuzncdi';
     var iceServers = options.iceServers || [
       {url: 'stun://stun.l.google.com:19302'},
       {url: 'stun://stun1.l.google.com:19302'},
@@ -29,12 +28,18 @@ class PeerManager extends EventEmitter {
       {url: 'stun://stun4.l.google.com:19302'}
     ];
     this.status = 'Connecting...';
-    this.peer = new Peer({
-      key: key,
+    var peerOptions = {
+      host: options.host || '0.peerjs.com',
+      port: options.port || 80,
+      path: options.path || '/',
       config: {
         iceServers: iceServers
       }
-    });
+    };
+    if (options.key) {
+      peerOptions.key = options.key;
+    }
+    this.peer = new Peer(peerOptions);
     this.peer.on('open', (id) => {
       this.connected = true;
       this.status = `Connected as ${id}`;

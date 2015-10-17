@@ -7,7 +7,12 @@ class PeerStore extends EventEmitter {
   constructor() {
     super();
     this.peers = new PeerData();
-    this.peers.start();
+    this.peers.start({
+      key: 'doppelchat',
+      host: 'localhost',
+      port: 9000,
+      path: '/'
+    });
     this.peers.addListener('peerMsg', (peerId, message, connection) => {
       // DoppelDispatcher.dispatch({
       //   action: 'peerMsg',
