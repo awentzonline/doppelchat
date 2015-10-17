@@ -15,14 +15,13 @@ class CallViewComponent extends React.Component {
   }
   _onMuteChanged(event) {
     var val = event.target.value;
-    console.log(val);
     this.setState({
       muted: val == 'on'
     });
   }
   render() {
     var call = this.props.peerCall;
-    if (call.open) {
+    if (call && call.open) {
       return (
         <div className="callView">
           <VideoStream stream={call.remoteStream}
@@ -33,7 +32,7 @@ class CallViewComponent extends React.Component {
     } else {
       return (
         <div className="callView">
-          {call.peer}
+          No stream
         </div>
       );
     }

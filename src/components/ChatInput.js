@@ -1,25 +1,26 @@
 import React from 'react';
 
 import {TextField} from 'material-ui';
+import ChatActions from 'actions/ChatActions';
 import PeerActions from 'actions/PeerActions';
 
 
-class AddPeerComponent extends React.Component {
+class ChatInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      peerId: ''
+      text: ''
     };
   }
   render() {
     return (
-      <div className="addPeer">
+      <div className="chatInput">
         <form onSubmit={this.onSubmit.bind(this)}>
           <TextField
-            hintText="Peer ID"
-            floatingLabelText="Add a peer"
+            hintText="Type your message and hit enter"
+            floatingLabelText="Send a message"
             multiLine={false}
-            value={this.state.peerId}
+            value={this.state.text}
             onChange={this.onTextChanged.bind(this)}
             fullWidth={true}
              />
@@ -28,19 +29,19 @@ class AddPeerComponent extends React.Component {
     );
   }
   onTextChanged(event) {
-    this.setState({peerId: event.target.value});
+    this.setState({text: event.target.value});
   }
   onSubmit(event) {
     event.preventDefault();
-    var peerId = this.state.peerId;
-    if (peerId) {
-      PeerActions.makeCall(peerId);
+    var text = this.state.text;
+    if (text) {
+      ChatActions.broadcastChat(text);
     }
-    this.setState({peerId: ''});
+    this.setState({text: ''});
   }
 }
 
-AddPeerComponent.defaultProps = {
+ChatInput.defaultProps = {
 };
 
-export default AddPeerComponent;
+export default ChatInput;

@@ -1,25 +1,25 @@
 import React from 'react';
 import {Paper} from 'material-ui';
 import CallView from 'components/CallView';
-import PeerStore from 'stores/PeerStore';
+import ConnectionStore from 'stores/ConnectionStore';
 
 
 class CallList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calls: PeerStore.getCallList()
+      calls: ConnectionStore.getCallList()
     };
   }
   componentDidMount() {
-    PeerStore.peers.addListener('callsChange', this._onChange.bind(this));
+    ConnectionStore.addListener('callsChange', this._onChange.bind(this));
   }
   componentWillUnmount() {
-    PeerStore.peers.removeListener('callsChange', this._onChange.bind(this));
+    ConnectionStore.removeListener('callsChange', this._onChange.bind(this));
   }
   _onChange() {
     this.setState({
-      calls: PeerStore.getCallList()
+      calls: ConnectionStore.getCallList()
     });
   }
   render() {

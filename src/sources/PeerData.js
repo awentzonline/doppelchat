@@ -1,11 +1,13 @@
 import {EventEmitter} from 'events';
 import Peer from 'peerjs';
 import UserMediaStore from 'stores/UserMediaStore';
+import PeerActions from 'actions/PeerActions';
 import config from 'config';
 
 const Events = {
   CHANGE_EVENT: 'change',
   CALLS_CHANGE_EVENT: 'callsChange',
+  PEERS_CHANGE_EVENT: 'peersChange',
   PEER_MESSAGE: 'peerMsg'
 };
 
@@ -17,7 +19,6 @@ class PeerManager extends EventEmitter {
     this.dataConnections = {};
     this.connected = false;
     this.peer = null;
-    this.status = 'Inactive';
   }
   start(options_) {
     var options = options_ || {};
@@ -28,7 +29,6 @@ class PeerManager extends EventEmitter {
       {url: 'stun://stun3.l.google.com:19302'},
       {url: 'stun://stun4.l.google.com:19302'}
     ];
-    this.status = 'Connecting...';
     var peerOptions = {
       host: options.host || '0.peerjs.com',
       port: options.port || 80,
@@ -42,15 +42,21 @@ class PeerManager extends EventEmitter {
     }
     this.peer = new Peer(peerOptions);
     this.peer.on('open', (id) => {
+      // console.log('Your peer ID is: ' + id);
       this.connected = true;
-      this.status = `Connected as ${id}`;
-      this.emit(Events.CHANGE_EVENT);
-      //console.log('Your peer ID is: ' + id);
+      PeerActions.connectedToPeerServer();
+      // Just connect to everyone on the server:
+      this.peer.listAllPeers((peerIds) => {
+        if (peerIds) {
+          peerIds.forEach((peerId) => {
+            this.connectToPeer(peerId);
+          });
+        }
+      });
     });
     this.peer.on('connection', this._handleNewConnection.bind(this));
     this.peer.on('error', (err) => {
       //console.log('Peer error: ' + err);
-      this.status = err;
       this.connected = false;
       this.emit(Events.CHANGE_EVENT);
     });
@@ -61,27 +67,22 @@ class PeerManager extends EventEmitter {
     });
     return this.peer;
   }
-  callPeer(peerId) {
-    var call = this.peer.call(peerId, UserMediaStore.stream);
-    this._handleNewCall(call);
+  callPeer(peerId, stream) {
+    if (stream) {
+      var call = this.peer.call(peerId, stream);
+      this._handleNewCall(call);
+    }
   }
-  connectTo(peerId) {
+  connectToPeer(peerId) {
     if (this.dataConnections[peerId] === undefined && peerId != this.peer.id) {
+      console.log(`connectToPeer: ${peerId}`);
       var connection = this.peer.connect(peerId);
       this._handleNewConnection(connection);
     }
   }
-  sendPeerListTo(peerId) {
-    // send a list of everyone but the target peer
-    var connection = this.dataConnections[peerId];
-    if (!connection) {
-      return;
-    }
-    var peerIds = Object.keys(this.dataConnections);
-    this.sendMessageToPeer(peerId, 'peers4u', peerIds);
-  }
   broadcast(msgType, data) {
     var packet = [msgType, data];
+    this._onIncomingPeerMessage(packet, this.peer.id, null);
     Object.keys(this.dataConnections).forEach((name) => {
       var connection = this.dataConnections[name];
       connection.send(packet);
@@ -94,19 +95,14 @@ class PeerManager extends EventEmitter {
       connection.send(packet);
     }
   }
-  getPeerList() {
-    var ids = Object.keys(this.dataConnections) || [];
-    ids.sort();
-    return ids.map((id) => {
-      return {id: id}
-    });
-  }
-  getCallList() {
-    var ids = Object.keys(this.calls) || [];
-    ids.sort();
-    return ids.map((id) => {
-      return this.calls[id];
-    });
+  sendPeerListTo(peerId) {
+    // send a list of everyone but the target peer
+    var connection = this.dataConnections[peerId];
+    if (!connection) {
+      return;
+    }
+    var peerIds = Object.keys(this.dataConnections);
+    this.sendMessageToPeer(peerId, 'peers4u', peerIds);
   }
   // mediaConnections
   _handleNewCall(call) {
@@ -116,13 +112,14 @@ class PeerManager extends EventEmitter {
     call.on('stream', this._onCallStream.bind(this, peerId));
     call.on('close', this._onCallClose.bind(this, peerId));
     call.on('error', this._onCallError.bind(this, peerId));
+    PeerActions.callAdded(call);
   }
   _onCallStream(peerId) {
-    this.emit(Events.CALLS_CHANGE_EVENT);
+    PeerActions.callStarted(peerId);
   }
   _onCallClose(peerId) {
     delete this.calls[peerId];
-    this.emit(Events.CALLS_CHANGE_EVENT);
+    PeerActions.callRemoved(peerId);
   }
   _onCallError(peerId, err) {
     console.log(`Call ${peerId} error: ${err}`);
@@ -144,7 +141,7 @@ class PeerManager extends EventEmitter {
         var peerList = payload;
         peerList.forEach((pid) => {
           if (this.dataConnections[pid] === undefined) {
-            this.connectTo(pid);
+            this.connectToPeer(pid);
           }
         });
         break;
@@ -159,13 +156,12 @@ class PeerManager extends EventEmitter {
   }
   _onConnectionOpen(peerId) {
     console.log(`${peerId} opened`);
-    this.emit(Events.CALLS_CHANGE_EVENT);
-    this.sendPeerListTo(peerId);
+    PeerActions.connectionAdded(this.dataConnections[peerId]);
   }
   _onConnectionClose(peerId) {
     console.log(peerId + ' closed');
     delete this.dataConnections[peerId];
-    this.emit(Events.CALLS_CHANGE_EVENT);
+    PeerActions.connectionRemoved(peerId)
   }
   _onConnectionError(peerId, err) {
     console.log(`${peerId} error: ${err}`);
@@ -174,6 +170,35 @@ class PeerManager extends EventEmitter {
     // this.emit(Events.CALLS_CHANGE_EVENT);
   }
 
+  // Moved to ConnectionStore?
+  getPeerList() {
+    var ids = Object.keys(this.dataConnections) || [];
+    ids.sort();
+    return ids.map((id) => {
+      return {id: id}
+    });
+  }
+  getPeerIds() {
+    var ids = Object.keys(this.dataConnections) || [];
+    ids.sort();
+    return ids;
+  }
+  getDataConnections() {
+    var ids = Object.keys(this.dataConnections) || [];
+    ids.sort();
+    return ids.map((id) => {
+      return this.dataConnections[id];
+    });
+  }
+  getCallList() {
+    var ids = Object.keys(this.calls) || [];
+    ids.sort();
+    return ids.map((id) => {
+      return this.calls[id];
+    });
+  }
 }
 
-export default PeerManager;
+const peers = new PeerManager();
+
+export default peers;

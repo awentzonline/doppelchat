@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 class VideoStreamComponent extends React.Component {
   render() {
     var stream = this.props.stream
