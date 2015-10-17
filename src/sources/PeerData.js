@@ -1,6 +1,7 @@
 import {EventEmitter} from 'events';
 import Peer from 'peerjs';
 import UserMediaStore from 'stores/UserMediaStore';
+import config from 'config';
 
 const Events = {
   CHANGE_EVENT: 'change',

@@ -25,4 +25,7 @@ config.module.loaders.push({
   include: path.join(__dirname, '/../src')
 });
 
+var srcPath = path.join(__dirname, '/../src');
+config.resolve.alias['config'] = srcPath + '/config/local';
+
 module.exports = config;
