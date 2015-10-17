@@ -5,7 +5,7 @@ import config from 'config';
 
 const Events = {
   CHANGE_EVENT: 'change',
-  PEERS_CHANGE_EVENT: 'peersChange',
+  CALLS_CHANGE_EVENT: 'callsChange',
   PEER_MESSAGE: 'peerMsg'
 };
 
@@ -57,7 +57,7 @@ class PeerManager extends EventEmitter {
     this.peer.on('call', (call) => {
       this._handleNewCall(call);
       call.answer(UserMediaStore.stream);
-      this.emit(Events.PEERS_CHANGE_EVENT);
+      this.emit(Events.CALLS_CHANGE_EVENT);
     });
     return this.peer;
   }
@@ -118,11 +118,11 @@ class PeerManager extends EventEmitter {
     call.on('error', this._onCallError.bind(this, peerId));
   }
   _onCallStream(peerId) {
-    this.emit(Events.PEERS_CHANGE_EVENT);
+    this.emit(Events.CALLS_CHANGE_EVENT);
   }
   _onCallClose(peerId) {
     delete this.calls[peerId];
-    this.emit(Events.PEERS_CHANGE_EVENT);
+    this.emit(Events.CALLS_CHANGE_EVENT);
   }
   _onCallError(peerId, err) {
     console.log(`Call ${peerId} error: ${err}`);
@@ -159,19 +159,19 @@ class PeerManager extends EventEmitter {
   }
   _onConnectionOpen(peerId) {
     console.log(`${peerId} opened`);
-    this.emit(Events.PEERS_CHANGE_EVENT);
+    this.emit(Events.CALLS_CHANGE_EVENT);
     this.sendPeerListTo(peerId);
   }
   _onConnectionClose(peerId) {
     console.log(peerId + ' closed');
     delete this.dataConnections[peerId];
-    this.emit(Events.PEERS_CHANGE_EVENT);
+    this.emit(Events.CALLS_CHANGE_EVENT);
   }
   _onConnectionError(peerId, err) {
     console.log(`${peerId} error: ${err}`);
     // TODO: Does this kill the connnection?
     // delete this.dataConnections[peerId];
-    // this.emit(Events.PEERS_CHANGE_EVENT);
+    // this.emit(Events.CALLS_CHANGE_EVENT);
   }
 
 }

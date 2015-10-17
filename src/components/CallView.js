@@ -6,7 +6,7 @@ import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
 import {Checkbox, Paper} from 'material-ui';
 
 
-class PeerViewComponent extends React.Component {
+class CallViewComponent extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -24,19 +24,15 @@ class PeerViewComponent extends React.Component {
     var call = this.props.peerCall;
     if (call.open) {
       return (
-        <div className="peerView">
+        <div className="callView">
           <VideoStream stream={call.remoteStream}
               muted={this.props.muted}
               width="100%" height="100%" />
-          <Checkbox label="Mute"
-              value={this.state.muted}
-              defaultChecked={this.props.muted}
-              onChange={this._onMuteChanged} />
         </div>
       );
     } else {
       return (
-        <div className="peerView">
+        <div className="callView">
           {call.peer}
         </div>
       );
@@ -44,8 +40,8 @@ class PeerViewComponent extends React.Component {
   }
 }
 
-PeerViewComponent.defaultProps = {
+CallViewComponent.defaultProps = {
   peerCall: null
 };
 
-export default PeerViewComponent;
+export default CallViewComponent;

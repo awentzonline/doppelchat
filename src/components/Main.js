@@ -8,7 +8,7 @@ import {Paper} from 'material-ui';
 
 import AddPeer from 'components/AddPeer';
 import P2PStatus from 'components/P2PStatus';
-import PeerList from 'components/PeerList';
+import CallList from 'components/CallList';
 import UserVideoStream from 'components/UserVideoStream';
 
 import UserMediaStore from 'stores/UserMediaStore';
@@ -38,7 +38,7 @@ class AppComponent extends React.Component {
             </Paper>
           </div>
           <div className="col-md col-xs">
-            <PeerList />
+            <CallList />
           </div>
         </div>
       </div>

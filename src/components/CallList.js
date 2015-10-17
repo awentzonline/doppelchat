@@ -1,10 +1,10 @@
 import React from 'react';
 import {Paper} from 'material-ui';
-import PeerView from 'components/PeerView';
+import CallView from 'components/CallView';
 import PeerStore from 'stores/PeerStore';
 
 
-class PeerList extends React.Component {
+class CallList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,10 +12,10 @@ class PeerList extends React.Component {
     };
   }
   componentDidMount() {
-    PeerStore.peers.addListener('peersChange', this._onChange.bind(this));
+    PeerStore.peers.addListener('callsChange', this._onChange.bind(this));
   }
   componentWillUnmount() {
-    PeerStore.peers.removeListener('peersChange', this._onChange.bind(this));
+    PeerStore.peers.removeListener('callsChange', this._onChange.bind(this));
   }
   _onChange() {
     this.setState({
@@ -25,7 +25,7 @@ class PeerList extends React.Component {
   render() {
     var peerItems = this.state.calls.map(renderPeerItem);
     return (
-      <div className="peerList row">
+      <div className="callList row">
         {peerItems}
       </div>
     );
@@ -36,10 +36,10 @@ function renderPeerItem(call) {
   return (
     <div className="col-xs-4">
       <Paper zDepth={3}>
-        <PeerView peerCall={call} />
+        <CallView peerCall={call} />
       </Paper>
     </div>
   );
 }
 
-export default PeerList;
+export default CallList;
