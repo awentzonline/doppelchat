@@ -1,7 +1,7 @@
 var serverKey = process.env.PEER_KEY || 'doppelchat';
 var serverPort = process.env.PEER_PORT || 9000;
 var serverPath = process.env.PEER_PATH || '/';
-var allowDiscovery = process.env.PEER_DISCOVERY || false;
+var allowDiscovery = process.env.PEER_DISCOVERY !== 'off';
 
 var PeerServer = require('peer').PeerServer;
 var server = PeerServer({
