@@ -51,7 +51,6 @@ class AppComponent extends React.Component {
           </div>
           <div className="col-md col-xs">
             <CallList />
-            <h3>Chats</h3>
             <ChatInput />
             <ChatList />
           </div>

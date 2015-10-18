@@ -23,6 +23,7 @@ class ChatInput extends React.Component {
             value={this.state.text}
             onChange={this.onTextChanged.bind(this)}
             fullWidth={true}
+            autoComplete="off"
              />
         </form>
       </div>

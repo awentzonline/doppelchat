@@ -8,6 +8,5 @@ export default class ChatActions {
     PeerActions.broadcast('chat', {
       body: message
     });
-
   }
 }
