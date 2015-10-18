@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatchers/DoppelDispatcher';
+import Dispatcher from 'dispatchers/DoppelDispatcher';
 import PeerActions from 'actions/PeerActions';
 
 

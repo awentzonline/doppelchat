@@ -1,7 +1,8 @@
 import {EventEmitter} from 'events';
 import Peer from 'peerjs';
-import UserMediaStore from 'stores/UserMediaStore';
+
 import PeerActions from 'actions/PeerActions';
+import UserMediaStore from 'stores/UserMediaStore';
 import config from 'config';
 
 const Events = {
@@ -78,6 +79,12 @@ class PeerManager extends EventEmitter {
     if (stream) {
       var call = this.peer.call(peerId, stream);
       this._handleNewCall(call);
+    }
+  }
+  endCall(peerId) {
+    var call = this.calls[peerId];
+    if (call) {
+      call.close();
     }
   }
   broadcast(msgType, data) {

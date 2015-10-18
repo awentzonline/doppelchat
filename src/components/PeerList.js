@@ -1,8 +1,8 @@
 import React from 'react';
 import {Paper} from 'material-ui';
+
 import PeerView from 'components/PeerView';
 import ConnectionStore from 'stores/ConnectionStore';
-
 
 class PeerList extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class PeerList extends React.Component {
   render() {
     var peerItems = this.state.peerIds.map(renderPeerItem);
     return (
-      <div className="peerList row">
+      <div className="peerList col-xs">
         {peerItems}
       </div>
     );
@@ -34,9 +34,11 @@ class PeerList extends React.Component {
 
 function renderPeerItem(peerId) {
   return (
-    <div className="col-xs">
+    <div className="row">
       <Paper zDepth={3}>
-        <PeerView peerId={peerId} />
+        <div clasName="col-xs">
+          <PeerView peerId={peerId} />
+        </div>
       </Paper>
     </div>
   );

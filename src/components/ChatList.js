@@ -3,7 +3,6 @@ import {Paper} from 'material-ui';
 
 import ChatStore from 'stores/ChatStore';
 
-
 class ChatList extends React.Component {
   constructor(props) {
     super(props);

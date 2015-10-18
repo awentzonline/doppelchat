@@ -1,11 +1,9 @@
 import React from 'react';
-
 import {Paper, FlatButton} from 'material-ui';
+
+import UserMediaActions from 'actions/UserMediaActions';
 import VideoStream from 'components/VideoStream';
-
 import UserMediaStore from 'stores/UserMediaStore';
-import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
-
 
 class UserVideoStream extends React.Component {
   constructor() {
@@ -36,7 +34,7 @@ class UserVideoStream extends React.Component {
       );
     } else {
       return (
-        <div className="userVideoStream col-xs xs-center">
+        <div className="userVideoStream col-xs center-xs">
           <FlatButton label="Start Camera"
               onClick={this._acquireUserStream}
               />
@@ -45,13 +43,7 @@ class UserVideoStream extends React.Component {
     }
   }
   _acquireUserStream(event) {
-    DoppelDispatcher.dispatch({
-      action: 'acquireUserStream',
-      data: {
-        video: true,
-        audio: true
-      }
-    });
+    UserMediaActions.acquireUserStream();
   }
 }
 

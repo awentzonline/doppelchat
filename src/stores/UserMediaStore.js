@@ -1,6 +1,5 @@
 import {EventEmitter} from 'events';
-import getUserMedia from 'getusermedia';
-import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
+import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 
 const CHANGE_EVENT = 'change';
 
@@ -10,19 +9,22 @@ class UserMediaStore extends EventEmitter {
     this.stream = null;
     this.error = null;
   }
-  emitChange() {
-    this.emit(CHANGE_EVENT);
-  }
   dispatch(payload) {
     switch (payload.action) {
-      case 'acquireUserStream':
-        getUserMedia(payload.data, (err, stream) => {
-          this.stream = stream;
-          this.error = err;
-          this.emitChange();
-        });
+      case 'userMediaStreamStarted':
+        this.stream = payload.data.stream;
+        this.error = null;
+        this.emitChange();
+        break;
+      case 'userMediaStreamError':
+        this.stream = null;
+        this.error = payload.data.error;
+        this.emitChange();
         break;
     }
+  }
+  emitChange() {
+    this.emit(CHANGE_EVENT);
   }
 }
 

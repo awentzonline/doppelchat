@@ -4,7 +4,6 @@ import {TextField} from 'material-ui';
 import ChatActions from 'actions/ChatActions';
 import PeerActions from 'actions/PeerActions';
 
-
 class ChatInput extends React.Component {
   constructor(props) {
     super(props);

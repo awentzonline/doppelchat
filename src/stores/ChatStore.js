@@ -1,5 +1,5 @@
 import {EventEmitter} from 'events';
-import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
+import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 
 const CHANGE_EVENT = 'change';
 const MAX_NUM_ITEMS = 100;

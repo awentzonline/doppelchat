@@ -1,5 +1,5 @@
 import {EventEmitter} from 'events';
-import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
+import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 
 const Events = {
   CHANGE_EVENT: 'change',

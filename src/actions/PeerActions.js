@@ -1,4 +1,4 @@
-import Dispatcher from '../dispatchers/DoppelDispatcher';
+import Dispatcher from 'dispatchers/DoppelDispatcher';
 
 import PeerData from 'sources/PeerData';
 import UserMediaStore from 'stores/UserMediaStore';
@@ -25,6 +25,9 @@ export default class PeerActions {
   static makeCall(peerId, stream) {
     //console.log(`Calling ${peerId}`);
     PeerData.callPeer(peerId, stream);
+  }
+  static endCall(peerId) {
+    PeerData.endCall(peerId);
   }
   static broadcast(type, data) {
     //console.log(`Broadcasting ${type} ${data}`);

@@ -13,12 +13,9 @@ import ChatList from 'components/ChatList';
 import P2PStatus from 'components/P2PStatus';
 import PeerList from 'components/PeerList';
 import UserVideoStream from 'components/UserVideoStream';
-
 import UserMediaStore from 'stores/UserMediaStore';
-import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
 
 import config from 'config';
-
 
 class AppComponent extends React.Component {
   constructor() {
@@ -65,15 +62,6 @@ class AppComponent extends React.Component {
 
       </div>
     );
-  }
-  _acquireUserStream(event) {
-    DoppelDispatcher.dispatch({
-      action: 'acquireUserStream',
-      data: {
-        video: true,
-        audio: true
-      }
-    });
   }
 }
 

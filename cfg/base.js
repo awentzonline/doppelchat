@@ -27,7 +27,8 @@ module.exports = {
       components: srcPath + '/components/',
       sources: srcPath + '/sources/',
       stores: srcPath + '/stores/',
-      styles: srcPath + '/styles/'
+      styles: srcPath + '/styles/',
+      dispatchers: srcPath + '/dispatchers/'
     }
   },
   module: {

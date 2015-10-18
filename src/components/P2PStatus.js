@@ -1,6 +1,6 @@
 import React from 'react';
-import ConnectionStore from 'stores/ConnectionStore';
 
+import ConnectionStore from 'stores/ConnectionStore';
 
 class P2PStatusComponent extends React.Component {
   constructor(props) {

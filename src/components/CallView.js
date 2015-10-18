@@ -1,32 +1,28 @@
 import React from 'react';
+import {FlatButton, Paper} from 'material-ui';
 
+import PeerActions from 'actions/PeerActions';
 import VideoStream from 'components/VideoStream';
-import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
-
-import {Checkbox, Paper} from 'material-ui';
-
 
 class CallViewComponent extends React.Component {
   constructor() {
     super();
-    this.state = {
-      muted: false
-    };
   }
-  _onMuteChanged(event) {
-    var val = event.target.value;
-    this.setState({
-      muted: val == 'on'
-    });
+  _onEndCall() {
+    PeerActions.endCall(this.props.peerCall.peer);
   }
   render() {
     var call = this.props.peerCall;
     if (call && call.open) {
       return (
-        <div className="callView">
+        <div className="callView col-xs">
           <VideoStream stream={call.remoteStream}
               muted={this.props.muted}
               width="100%" height="100%" />
+          <div className="end-xs">
+            <FlatButton label="Close"
+              onClick={this._onEndCall.bind(this)} />
+          </div>
         </div>
       );
     } else {
@@ -40,7 +36,8 @@ class CallViewComponent extends React.Component {
 }
 
 CallViewComponent.defaultProps = {
-  peerCall: null
+  peerCall: null,
+  muted: true
 };
 
 export default CallViewComponent;

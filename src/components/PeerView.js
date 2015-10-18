@@ -1,14 +1,11 @@
 import React from 'react';
-
 import {Checkbox, Paper} from 'material-ui';
 
 import PeerActions from 'actions/PeerActions';
 import CallView from 'components/CallView';
 import VideoStream from 'components/VideoStream';
-import DoppelDispatcher from '../dispatchers/DoppelDispatcher';
 import ConnectionStore from 'stores/ConnectionStore';
 import UserMediaStore from 'stores/UserMediaStore';
-
 
 class PeerView extends React.Component {
   constructor() {
