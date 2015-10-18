@@ -20,6 +20,12 @@ export default class UserMediaActions {
       }
     })
   }
+  static stopUserStream(stream) {
+    stream.stop();
+    dispatch('userMediaStreamStopped', {
+      stream: stream
+    });
+  }
 }
 
 function dispatch(action, data) {

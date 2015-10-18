@@ -1,14 +1,6 @@
 import Dispatcher from 'dispatchers/DoppelDispatcher';
 
 import PeerData from 'sources/PeerData';
-import UserMediaStore from 'stores/UserMediaStore';
-
-function dispatch(action, data) {
-  Dispatcher.dispatch({
-    action: action,
-    data: data
-  });
-}
 
 export default class PeerActions {
   // Client-initiated actions ////////////////////////////////
@@ -74,4 +66,11 @@ export default class PeerActions {
       connection: connection
     });
   }
+}
+
+function dispatch(action, data) {
+  Dispatcher.dispatch({
+    action: action,
+    data: data
+  });
 }

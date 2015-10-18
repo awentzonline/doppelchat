@@ -21,6 +21,11 @@ class UserMediaStore extends EventEmitter {
         this.error = payload.data.error;
         this.emitChange();
         break;
+      case 'userMediaStreamStopped':
+        this.stream = null;
+        this.error = null;
+        this.emitChange();
+        break;
     }
   }
   emitChange() {
