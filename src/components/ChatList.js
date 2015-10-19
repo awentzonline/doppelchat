@@ -37,7 +37,7 @@ function renderItem(item) {
   return (
     <div className="row">
       <div className="col-xs">
-        <p>{item.body}</p>
+        <div dangerouslySetInnerHTML={{__html: item.body}}></div>
       </div>
     </div>
   );

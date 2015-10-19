@@ -1,4 +1,5 @@
 import {EventEmitter} from 'events';
+import {markdown} from 'markdown';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 
 const CHANGE_EVENT = 'change';
@@ -27,9 +28,11 @@ class ChatStore extends EventEmitter {
     var body = message.data.body;
     if (body) {
       body += ''; // strings, baby
+      body = body.substr(0, 512)  // cut down on the funny business
+      body = markdown.toHTML(body);
       var item = {
         peerId: message.peerId,
-        body: body.substr(0, 512)  // cut down on the funny business
+        body: body
       }
       this.addItem(item);
     }
