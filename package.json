@@ -63,8 +63,8 @@
     "normalize.css": "^3.0.3",
     "peer": "^0.2.8",
     "peerjs": "^0.3.14",
-    "react": "^0.13.3",
+    "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "react-tap-event-plugin": "^0.1.8"
+    "react-tap-event-plugin": "^0.2.1"
   }
 }
