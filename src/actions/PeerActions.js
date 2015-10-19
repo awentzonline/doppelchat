@@ -21,6 +21,9 @@ export default class PeerActions {
   static endCall(peerId) {
     PeerData.endCall(peerId);
   }
+  static callEveryone(stream) {
+    PeerData.callEveryone(stream);
+  }
   static broadcast(type, data) {
     //console.log(`Broadcasting ${type} ${data}`);
     PeerData.broadcast(type, data);

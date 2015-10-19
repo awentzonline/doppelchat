@@ -6,9 +6,11 @@ import React from 'react';
 import {Dialog, FlatButton, Paper} from 'material-ui';
 
 import PeerActions from 'actions/PeerActions';
+import UserMediaActions from 'actions/UserMediaActions';
 import AddPeer from 'components/AddPeer';
 import CallList from 'components/CallList';
 import ChatInput from 'components/ChatInput';
+import ChatMain from 'components/ChatMain';
 import ChatList from 'components/ChatList';
 import P2PStatus from 'components/P2PStatus';
 import PeerList from 'components/PeerList';
@@ -25,43 +27,47 @@ class AppComponent extends React.Component {
     };
   }
   componentDidMount() {
+    UserMediaStore.addListener('change', this._userStreamChanged.bind(this));
+    this.refs.startupDialog.show();
+  }
+  componentWillUnmount() {
+    UserMediaStore.removeListener('change', this._userStreamChanged.bind(this));
+  }
+  _acquireUserStream(event) {
+    UserMediaActions.acquireUserStream();
+  }
+  _userStreamChanged() {
+    this.setState({
+      userStream: UserMediaStore.stream
+    });
+    this._connectToServer();
+  }
+  _connectToServer() {
     PeerActions.connectPeerServer({
       key: config.peerServer.key,
       host: config.peerServer.host,
       port: config.peerServer.port,
       path: config.peerServer.path
     });
-    // this.refs.startupDialog.show();
   }
   render() {
-    return (
-      <div className="container-fluid layout">
-        <div className="row localUserContainer">
-          <div className="col-md-3 col-xs-3">
-            <Paper zDepth={3}>
-              <P2PStatus />
-            </Paper>
-            <Paper zDepth={3}>
-              <UserVideoStream />
-            </Paper>
-            <PeerList />
-          </div>
-          <div className="col-md col-xs">
-            <CallList />
-            <ChatInput />
-            <ChatList />
-          </div>
-        </div>
-
+    if (this.state.userStream) {
+      return (
+        <ChatMain />
+      );
+    } else {
+      var errorMessage = UserMediaStore.error ? <p>Problem acquiring your camera</p> : '';
+      return (
         <Dialog
           ref="startupDialog"
-          title="Dialog With Custom Actions"
+          title="Connect your camera to get started"
           modal={true}>
-          The actions in this window were passed in as an array of react objects.
+          {errorMessage}
+          <FlatButton label="Connect"
+              onClick={this._acquireUserStream.bind(this)} />
         </Dialog>
-
-      </div>
-    );
+      );
+    }
   }
 }
 

@@ -22,6 +22,10 @@ class PeerManager extends EventEmitter {
     this.peer = null;
   }
   start(options_) {
+    if (this.peer) {
+      // Already connected
+      return;
+    }
     var options = options_ || {};
     var iceServers = options.iceServers || [
       {url: 'stun://stun.l.google.com:19302'},
@@ -62,8 +66,8 @@ class PeerManager extends EventEmitter {
       this.emit(Events.CHANGE_EVENT);
     });
     this.peer.on('call', (call) => {
-      this._handleNewCall(call);
       call.answer(UserMediaStore.stream);
+      this._handleNewCall(call);
       this.emit(Events.CALLS_CHANGE_EVENT);
     });
     return this.peer;
@@ -76,8 +80,9 @@ class PeerManager extends EventEmitter {
     }
   }
   callPeer(peerId, stream) {
-    if (stream) {
+    if (stream && !this.calls[peerId]) {
       var call = this.peer.call(peerId, stream);
+      console.log(`calling ${call}`)
       this._handleNewCall(call);
     }
   }
@@ -86,6 +91,14 @@ class PeerManager extends EventEmitter {
     if (call) {
       call.close();
     }
+  }
+  callEveryone(stream) {
+    Object.keys(this.dataConnections).forEach((peerId) => {
+      var existingCall = this.calls[peerId];
+      if (!existingCall) {
+        this.callPeer(peerId, stream);
+      }
+    });
   }
   broadcast(msgType, data) {
     var packet = [msgType, data];
@@ -119,6 +132,7 @@ class PeerManager extends EventEmitter {
     var peerId = call.peer;
     this.calls[peerId] = call;
     call.on('stream', (stream) => {
+      PeerActions.callAdded(call);
       PeerActions.callStarted(peerId);
     });
     call.on('close', () => {
@@ -128,7 +142,6 @@ class PeerManager extends EventEmitter {
     call.on('error', (err) => {
       console.log(`Call ${peerId} error: ${err}`);
     });
-    PeerActions.callAdded(call);
   }
   // dataConnection
   _handleNewConnection(dataConnection) {

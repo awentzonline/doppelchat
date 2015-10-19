@@ -1,6 +1,7 @@
 import React from 'react';
 import {Paper, FlatButton} from 'material-ui';
 
+import PeerActions from 'actions/PeerActions';
 import UserMediaActions from 'actions/UserMediaActions';
 import VideoStream from 'components/VideoStream';
 import UserMediaStore from 'stores/UserMediaStore';
@@ -9,13 +10,17 @@ class UserVideoStream extends React.Component {
   constructor() {
     super();
     this.state = {
-      userStream: null
+      userStream: UserMediaStore.stream
     };
   }
   _userStreamChanged() {
+    var stream = UserMediaStore.stream;
     this.setState({
-      userStream: UserMediaStore.stream
+      userStream: stream
     });
+    if (stream) {
+      PeerActions.callEveryone(stream);
+    }
   }
   componentDidMount() {
     UserMediaStore.addListener('change', this._userStreamChanged.bind(this));
