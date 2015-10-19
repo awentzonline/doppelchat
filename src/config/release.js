@@ -1,6 +1,6 @@
 export default {
   peerServer: {
-    host: 'someplace.com',
+    host: '159.203.253.111',
     port: 80,
     key: 'doppelchat',
     path: '/'
