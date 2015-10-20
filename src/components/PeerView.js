@@ -30,7 +30,7 @@ class PeerView extends React.Component {
     var peerId = this.props.peerId;
     return (
       <div className="peerView">
-        {{ peerId }}
+        {peerId}
       </div>
     );
   }
