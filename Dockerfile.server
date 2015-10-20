@@ -1,4 +1,5 @@
 FROM node:0.12
+MAINTAINER awentzonline
 
 COPY . /app
 WORKDIR /app
