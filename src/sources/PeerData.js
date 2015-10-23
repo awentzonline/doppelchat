@@ -66,7 +66,11 @@ class PeerManager extends EventEmitter {
       this.emit(Events.CHANGE_EVENT);
     });
     this.peer.on('call', (call) => {
-      call.answer(UserMediaStore.stream);
+      if (UserMediaStore.stream) {
+        call.answer(UserMediaStore.stream);
+      } else {
+        call.answer();
+      }
       this._handleNewCall(call);
       this.emit(Events.CALLS_CHANGE_EVENT);
     });
@@ -80,10 +84,18 @@ class PeerManager extends EventEmitter {
     }
   }
   callPeer(peerId, stream) {
-    if (stream && !this.calls[peerId]) {
-      var call = this.peer.call(peerId, stream);
-      console.log(`calling ${call}`)
-      this._handleNewCall(call);
+    if (stream) {
+      if (this.calls[peerId]) {
+        let call = this.calls[peerId];
+        setTimeout(function() {
+          call.localStream = stream;
+          console.log('added stream to call')
+        }, 20);
+      } else {
+        var call = this.peer.call(peerId, stream);
+        console.log(`calling ${call}`)
+        this._handleNewCall(call);
+      }
     }
   }
   endCall(peerId) {
@@ -94,10 +106,7 @@ class PeerManager extends EventEmitter {
   }
   callEveryone(stream) {
     Object.keys(this.dataConnections).forEach((peerId) => {
-      var existingCall = this.calls[peerId];
-      if (!existingCall) {
-        this.callPeer(peerId, stream);
-      }
+      this.callPeer(peerId, stream);
     });
   }
   broadcast(msgType, data) {
@@ -129,15 +138,17 @@ class PeerManager extends EventEmitter {
   // mediaConnections
   _handleNewCall(call) {
     // add some event handlers to new connections
-    var peerId = call.peer;
+    let peerId = call.peer;
     this.calls[peerId] = call;
     call.on('stream', (stream) => {
+      console.log('stream added')
       PeerActions.callAdded(call);
       PeerActions.callStarted(peerId);
     });
     call.on('close', () => {
       delete this.calls[peerId];
       PeerActions.callRemoved(peerId);
+      console.log('call removed')
     });
     call.on('error', (err) => {
       console.log(`Call ${peerId} error: ${err}`);

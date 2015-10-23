@@ -22,7 +22,7 @@ class P2PStatusComponent extends React.Component {
   }
   render() {
     return (
-      <div className="p2pStatus">
+      <div className="p2pStatus col-xs center-xs">
         {this.state.status}
       </div>
     );

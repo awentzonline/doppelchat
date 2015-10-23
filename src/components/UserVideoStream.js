@@ -40,7 +40,7 @@ class UserVideoStream extends React.Component {
     } else {
       return (
         <div className="userVideoStream col-xs center-xs">
-          <FlatButton label="Start Camera"
+          <FlatButton label="Camera"
               onClick={this._acquireUserStream}
               />
         </div>

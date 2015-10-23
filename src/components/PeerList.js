@@ -12,12 +12,13 @@ class PeerList extends React.Component {
     };
   }
   componentDidMount() {
-    ConnectionStore.addListener('peersChange', this._onChange.bind(this));
+    this._onChange = this.onChange.bind(this)
+    ConnectionStore.addListener('peersChange', this._onChange);
   }
   componentWillUnmount() {
-    ConnectionStore.removeListener('peersChange', this._onChange.bind(this));
+    ConnectionStore.removeListener('peersChange', this._onChange);
   }
-  _onChange() {
+  onChange() {
     this.setState({
       peerIds: ConnectionStore.getPeerIds()
     });
@@ -25,7 +26,7 @@ class PeerList extends React.Component {
   render() {
     var peerItems = this.state.peerIds.map(renderPeerItem);
     return (
-      <div className="peerList col-xs">
+      <div className="peerList row between-xs">
         {peerItems}
       </div>
     );
@@ -34,12 +35,8 @@ class PeerList extends React.Component {
 
 function renderPeerItem(peerId) {
   return (
-    <div className="row">
-      <Paper zDepth={3}>
-        <div clasName="col-xs">
-          <PeerView peerId={peerId} />
-        </div>
-      </Paper>
+    <div className="col-xs-6" key={peerId}>
+      <PeerView peerId={peerId} />
     </div>
   );
 }

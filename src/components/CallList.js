@@ -34,7 +34,7 @@ class CallList extends React.Component {
 
 function renderPeerItem(call) {
   return (
-    <div className="col-xs-4">
+    <div className="col-xs-4" key={call.peer}>
       <Paper zDepth={3}>
         <CallView peerCall={call} />
       </Paper>

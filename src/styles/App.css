@@ -16,8 +16,11 @@ body {
   min-width: 600px;
 }
 
+.connectedTo {
+  padding: 4px;
+}
+
 .userVideoStream {
-  padding: 8px;
 }
 
 .p2pStatus {
@@ -33,4 +36,35 @@ body {
 }
 .callView {
   margin-bottom: 16px;
+}
+
+.imageInput .previewImage {
+  width: 100%;
+}
+
+.imageUrlInput form {
+  padding: 8px;
+}
+
+.imageFileInput label {
+  display: block;
+  padding: 8px;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.imageFileInput input {
+  display: none;
+}
+
+.peerView {
+  padding: 4px;
+}
+
+.peerView .userImage {
+  width: 100%;
+}
+
+.chatItem img {
+  width: 100%;
 }

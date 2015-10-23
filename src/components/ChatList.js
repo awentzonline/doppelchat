@@ -25,7 +25,7 @@ class ChatList extends React.Component {
     var items = this.state.chatItems.map(renderItem);
     return (
       <div className="chatList row">
-        <div className="col-md">
+        <div className="col-xs">
           {items}
         </div>
       </div>
@@ -35,9 +35,13 @@ class ChatList extends React.Component {
 
 function renderItem(item) {
   return (
-    <div className="row">
+    <div className="row chatItem">
+      <div className="col-xs-2">
+        <img src={item.image} />
+      </div>
       <div className="col-xs">
-        <div dangerouslySetInnerHTML={{__html: item.body}}></div>
+        <div dangerouslySetInnerHTML={{__html: item.body}}>
+        </div>
       </div>
     </div>
   );

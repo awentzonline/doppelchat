@@ -1,6 +1,9 @@
 import Dispatcher from 'dispatchers/DoppelDispatcher';
 
+import config from 'config';
+import ImageClassifier from 'sources/ImageClassifier';
 import PeerData from 'sources/PeerData';
+
 
 export default class PeerActions {
   // Client-initiated actions ////////////////////////////////
@@ -27,6 +30,15 @@ export default class PeerActions {
   static broadcast(type, data) {
     //console.log(`Broadcasting ${type} ${data}`);
     PeerData.broadcast(type, data);
+  }
+  static updateUserImage(imageCanvas) {
+    const featureVector = ImageClassifier.classify(imageCanvas);
+    // console.log(ImageClassifier.getCifar10Labels(featureVector));
+    const imageInfo = {
+      image: imageCanvas.toDataURL(),
+      featureVector: featureVector
+    };
+    PeerData.broadcast('updateUserImage', imageInfo);
   }
   // Peer-initiated actions ////////////////////////////////
   static connectedToPeerServer() {
@@ -60,6 +72,7 @@ export default class PeerActions {
        peerId: peerId
      });
   }
+  // incoming p2p data
   static peerMsg(peerId, message, connection) {
     const [type, data] = message;
     dispatch('peerMsg', {
@@ -70,7 +83,7 @@ export default class PeerActions {
     });
   }
 }
-
+// utils
 function dispatch(action, data) {
   Dispatcher.dispatch({
     action: action,

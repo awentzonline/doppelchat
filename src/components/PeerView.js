@@ -4,33 +4,40 @@ import {Checkbox, Paper} from 'material-ui';
 import PeerActions from 'actions/PeerActions';
 import CallView from 'components/CallView';
 import VideoStream from 'components/VideoStream';
-import ConnectionStore from 'stores/ConnectionStore';
+import ChatUserStore from 'stores/ChatUserStore';
 import UserMediaStore from 'stores/UserMediaStore';
+import questionMark from '../images/qmark.png';
 
 class PeerView extends React.Component {
   constructor() {
     super();
     this.state = {
-      call: null
+      profile: {
+        image: questionMark
+      }
     };
   }
   componentDidMount() {
-    ConnectionStore.addListener('callsChange', this._onChange.bind(this));
+    // HACK: just kick off a call automatically
     PeerActions.makeCall(this.props.peerId, UserMediaStore.stream);
+    this._onUserChange = this.onUserChange.bind(this);
+    ChatUserStore.addListener('change', this._onUserChange);
   }
   componentWillUnmount() {
-    ConnectionStore.removeListener('callsChange', this._onChange.bind(this));
+    ChatUserStore.removeListener('change', this._onUserChange);
   }
-  _onChange() {
+  onUserChange() {
     this.setState({
-      call: ConnectionStore.getCall(this.props.peerId)
+      profile: ChatUserStore.getProfile(this.props.peerId)
     });
   }
   render() {
-    var peerId = this.props.peerId;
+    const peerId = this.props.peerId;
+
     return (
       <div className="peerView">
-        {peerId}
+        <img className="userImage"
+            src={this.state.profile.image} />
       </div>
     );
   }

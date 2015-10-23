@@ -11,6 +11,7 @@ import AddPeer from 'components/AddPeer';
 import CallList from 'components/CallList';
 import ChatInput from 'components/ChatInput';
 import ChatList from 'components/ChatList';
+import ImageInput from 'components/ImageInput';
 import P2PStatus from 'components/P2PStatus';
 import PeerList from 'components/PeerList';
 import UserVideoStream from 'components/UserVideoStream';
@@ -36,14 +37,16 @@ class ChatMain extends React.Component {
     return (
       <div className="container-fluid layout">
         <div className="row localUserContainer">
-          <div className="col-md-3 col-xs-3">
+          <div className="col-md-2 col-xs-2">
             <Paper zDepth={3}>
-              <P2PStatus />
+              <ImageInput
+                  cropWidth={config.user.image.width}
+                  cropHeight={config.user.image.height}
+                />
             </Paper>
             <Paper zDepth={3}>
-              <UserVideoStream />
+              <PeerList />
             </Paper>
-            <PeerList />
           </div>
           <div className="col-md col-xs">
             <CallList />
