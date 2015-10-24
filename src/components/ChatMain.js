@@ -44,7 +44,9 @@ class ChatMain extends React.Component {
                   cropHeight={config.user.image.height}
                 />
             </Paper>
+
             <Paper zDepth={3}>
+              <P2PStatus />
               <PeerList />
             </Paper>
           </div>
