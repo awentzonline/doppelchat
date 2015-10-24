@@ -5,9 +5,8 @@ import {Dialog, FlatButton, IconButton, Paper, TextField} from 'material-ui';
 import FileInput from 'react-file-input';
 
 import config from 'config';
-import questionMark from '../images/qmark.png';
 import PeerActions from 'actions/PeerActions';
-
+import questionMark from '../images/qmark.png';
 
 class ImageInput extends React.Component {
   constructor(props) {

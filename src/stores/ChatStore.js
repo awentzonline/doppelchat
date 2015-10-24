@@ -25,7 +25,7 @@ class ChatStore extends EventEmitter {
     }
   }
   addChat(message) {
-    let {body, image} = message.data;
+    let {body, image, featureVector} = message.data;
     if (body) {
       body += ''; // strings, baby
       body = body.substr(0, 512)  // cut down on the funny business
@@ -36,7 +36,8 @@ class ChatStore extends EventEmitter {
       var item = {
         peerId: message.peerId,
         body: body,
-        image: image
+        image: image,
+        featureVector: featureVector
       }
       this.addItem(item);
     }

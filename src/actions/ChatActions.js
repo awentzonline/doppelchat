@@ -4,10 +4,12 @@ import ChatUserStore from 'stores/ChatUserStore';
 
 export default class ChatActions {
   static broadcastChat(message) {
-    var profile = ChatUserStore.getProfile(PeerData.peer.id);
+    const profile = ChatUserStore.getLocalProfile();
+    const featureVector = Array.from(profile.featureVector);
     PeerActions.broadcast('chat', {
       body: message,
-      image: profile.image
+      image: profile.image,
+      featureVector: featureVector
     });
   }
 }

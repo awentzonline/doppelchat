@@ -1,4 +1,5 @@
 import {EventEmitter} from 'events';
+import PeerData from 'sources/PeerData';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 import questionMark from '../images/qmark.png';
 
@@ -49,11 +50,29 @@ class ChatUserStore extends EventEmitter {
     let profile = this.users[peerId];
     if (!profile) {
       profile = {
-        image: questionMark
+        image: questionMark,
+        featureVector: [0,0,0,0,0,0,0,0,0,0]
       };
     }
     return profile;
   }
+  getLocalProfile() {
+    return this.getProfile(PeerData.peer.id);
+  }
+  getDistanceToLocal(otherFeatures) {
+    var profile = this.getLocalProfile();
+    return distance2To(otherFeatures, profile.featureVector);
+  }
+}
+
+function distance2To(a, b) {
+  let d = 0.0;
+  let di = 0;
+  for (let i = 0, n = a.length; i < n; i++) {
+    di = b[i] - a[i];
+    d += di * di;
+  }
+  return d;
 }
 
 var store = new ChatUserStore();

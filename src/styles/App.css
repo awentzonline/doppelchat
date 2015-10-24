@@ -65,6 +65,11 @@ body {
   width: 100%;
 }
 
+.chatList {
+  position: relative;
+}
+
 .chatItem img {
   width: 100%;
+  position: relative;
 }

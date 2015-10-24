@@ -2,6 +2,7 @@ import React from 'react';
 import {Paper} from 'material-ui';
 
 import ChatStore from 'stores/ChatStore';
+import ChatUserStore from 'stores/ChatUserStore';
 
 class ChatList extends React.Component {
   constructor(props) {
@@ -24,18 +25,22 @@ class ChatList extends React.Component {
   render() {
     var items = this.state.chatItems.map(renderItem);
     return (
-      <div className="chatList row">
-        <div className="col-xs">
-          {items}
-        </div>
+      <div className="chatList col-xs">
+        {items}
       </div>
     );
   }
 }
 
 function renderItem(item) {
+  const distance = ChatUserStore.getDistanceToLocal(item.featureVector);
+  const offsetX = distance * 50;
+  const itemStyles = {
+    position: 'relative',
+    left: `${offsetX}%`
+  }
   return (
-    <div className="row chatItem">
+    <div className="row chatItem" style={itemStyles}>
       <div className="col-xs-2">
         <img src={item.image} />
       </div>
