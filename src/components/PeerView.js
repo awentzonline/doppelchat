@@ -32,10 +32,14 @@ class PeerView extends React.Component {
       profile: ChatUserStore.getProfile(this.props.peerId)
     });
   }
+  onAssumeFeatures() {
+    const profile = ChatUserStore.getProfile(this.props.peerId);
+    PeerActions.updateUserImageFromURL(profile.image, profile.featureVector);
+  }
   render() {
     const peerId = this.props.peerId;
     return (
-      <div className="peerView">
+      <div className="peerView" onClick={this.onAssumeFeatures.bind(this)}>
         <img className="userImage"
             src={this.state.profile.image} />
       </div>
