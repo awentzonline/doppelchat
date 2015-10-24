@@ -6,7 +6,7 @@ import ChatUserStore from './ChatUserStore';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 
 const CHANGE_EVENT = 'change';
-const MAX_NUM_ITEMS = 100;
+const MAX_NUM_ITEMS = 2000;
 
 class ChatStore extends EventEmitter {
   constructor() {

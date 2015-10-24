@@ -50,10 +50,14 @@ function renderItem(item) {
   const distance = ChatUserStore.getDistanceToLocal(item.featureVector);
   const offsetX = distance * 50;
   const offsetY = Math.max(0, Math.min(1, distance)) * 50;
+  let scale = Math.max(0, 1 - distance);
+  scale *= scale;
   const itemStyles = {
     position: 'relative',
     left: `${offsetX}%`,
-    transformY: `-${distance}%`
+    transform: `scale(${scale})`,
+    width: `${scale * 100}%`,
+    height: `${scale * 92}px`
   }
   function onImageClick() {
     PeerActions.updateUserImageFromURL(item.image, item.featureVector);
