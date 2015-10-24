@@ -9,18 +9,31 @@ class ChatList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      vector: [0,0,0,0,0,0,0,0,0,0],
       chatItems: ChatStore.getChatItems()
     };
   }
   componentDidMount() {
-    ChatStore.addListener('change', this._onChange.bind(this));
+    this._onChange = this.onChange.bind(this);
+    ChatStore.addListener('change', this._onChange);
+    this._onChatUserChange = this.onChatUserChange.bind(this);
+    ChatUserStore.addListener('change', this._onChatUserChange);
   }
   componentWillUnmount() {
-    ChatStore.removeListener('change', this._onChange.bind(this));
+    ChatStore.removeListener('change', this._onChange);
+    ChatUserStore.removeListener('change', this._onChatUserChange);
   }
-  _onChange() {
+  onChange() {
     this.setState({
+      vector: this.state.vector,
       chatItems: ChatStore.getChatItems()
+    });
+  }
+  onChatUserChange() {
+    const profile = ChatUserStore.getLocalProfile();
+    this.setState({
+      vector: profile.featureVector,
+      chatItems: this.state.chatItems
     });
   }
   render() {

@@ -6,6 +6,7 @@ import FileInput from 'react-file-input';
 
 import config from 'config';
 import PeerActions from 'actions/PeerActions';
+import ChatUserStore from 'stores/ChatUserStore';
 import questionMark from '../images/qmark.png';
 
 class ImageInput extends React.Component {
@@ -15,6 +16,20 @@ class ImageInput extends React.Component {
       originalImageSrc: questionMark,
       imageSrc: questionMark
     };
+  }
+  componentDidMount() {
+    this._onChatUserChange = this.onChatUserChange.bind(this);
+    ChatUserStore.addListener('change', this._onChatUserChange);
+  }
+  componentWillUnmount() {
+    ChatUserStore.removeListener('change', this._onChatUserChange);
+  }
+  onChatUserChange() {
+    const profile = ChatUserStore.getLocalProfile();
+    this.setState({
+      imageSrc: profile.image,
+      originalImageSrc: this.state.originalImageSrc
+    });
   }
   render() {
     const errorMessage = '';
@@ -114,10 +129,6 @@ class ImageInput extends React.Component {
     scaledImage.height = this.props.cropHeight;
     const context = scaledImage.getContext('2d');
     context.drawImage(canvas, 0, 0, scaledImage.width, scaledImage.height);
-    this.setState({
-      originalImageSrc: this.state.originalImageSrc,
-      imageSrc: scaledImage.toDataURL()
-    });
     PeerActions.updateUserImage(scaledImage);
     this.refs.imageInputDialog.dismiss();
   }

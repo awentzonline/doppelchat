@@ -13,7 +13,8 @@ class PeerView extends React.Component {
     super();
     this.state = {
       profile: {
-        image: questionMark
+        image: questionMark,
+        featureVector: [0,0,0,0,0,0,0,0,0,0]
       }
     };
   }
@@ -33,7 +34,6 @@ class PeerView extends React.Component {
   }
   render() {
     const peerId = this.props.peerId;
-
     return (
       <div className="peerView">
         <img className="userImage"

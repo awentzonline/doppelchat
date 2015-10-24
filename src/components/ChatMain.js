@@ -14,6 +14,7 @@ import ChatList from 'components/ChatList';
 import ImageInput from 'components/ImageInput';
 import P2PStatus from 'components/P2PStatus';
 import PeerList from 'components/PeerList';
+import PeerView from 'components/PeerView';
 import UserVideoStream from 'components/UserVideoStream';
 import UserMediaStore from 'stores/UserMediaStore';
 
