@@ -34,9 +34,12 @@ export default class PeerActions {
   static updateUserImage(imageCanvas) {
     const featureVector = ImageClassifier.classify(imageCanvas);
     // console.log(ImageClassifier.getCifar10Labels(featureVector));
+    this.updateUserImageFromURL(imageCanvas.toDataURL(), featureVector);
+  }
+  static updateUserImageFromURL(imageUrl, features) {
     const imageInfo = {
-      image: imageCanvas.toDataURL(),
-      featureVector: featureVector
+      image: imageUrl,
+      featureVector: features
     };
     PeerData.broadcast('updateUserImage', imageInfo);
   }

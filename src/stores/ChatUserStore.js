@@ -93,7 +93,7 @@ class ChatUserStore extends EventEmitter {
       return isNaN(val);
     }).reduce((acc, val) => {
       return acc || val;
-    });
+    }, false);
     if (containsBadEntry) {
       return null;
     }
