@@ -1,4 +1,5 @@
 import {EventEmitter} from 'events';
+import config from 'config';
 import PeerData from 'sources/PeerData';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 import questionMark from '../images/qmark.png';
@@ -8,11 +9,13 @@ const CHANGE_EVENT = 'change';
 class ChatUserStore extends EventEmitter {
   constructor() {
     super();
-    this.localUser = {
-      image: null,
-      featureVector: null
-    };
     this.users = {};
+    // We use this canvas to regenerate incoming images to try and reduce shit inputs.
+    this._sanitationCanvas = document.createElement('canvas');
+    this._sanitationCanvas.width = config.user.image.width;
+    this._sanitationCanvas.height = config.user.image.height;
+    this._sanitationContext = this._sanitationCanvas.getContext('2d');
+    this._sanitationImg = document.createElement('img');
   }
   dispatch(payload) {
     switch (payload.action) {
@@ -32,14 +35,18 @@ class ChatUserStore extends EventEmitter {
     }
   }
   updateUserImage(message) {
-    const {image, featureVector} = message.data;
     const {peerId} = message;
-    this.users[peerId] = {
-      peerId: peerId,
-      image: image,
-      featureVector: featureVector
-    };
-    this.emit(CHANGE_EVENT);
+    let {image, featureVector} = message.data;
+    featureVector = this.sanitizeProfileFeatureVector(featureVector);
+    image = this.sanitizeProfileImage(image);
+    if (image && featureVector) {
+      this.users[peerId] = {
+        peerId: peerId,
+        image: image,
+        featureVector: featureVector
+      };
+      this.emit(CHANGE_EVENT);
+    }
   }
   removeUser(message) {
     const {peerId} = message.data;
@@ -62,6 +69,35 @@ class ChatUserStore extends EventEmitter {
   getDistanceToLocal(otherFeatures) {
     var profile = this.getLocalProfile();
     return distance2To(otherFeatures, profile.featureVector);
+  }
+  sanitizeProfileImage(imageSrc) {
+    // TODO: I'm not really sure of the best practices for this.
+    // Ensure it's data, not script or an external url:
+    if (imageSrc.indexOf('data:') != 0) {
+      return null;
+    }
+    this._sanitationImg.src = imageSrc;
+    // Enforce consistent dimensions:
+    this._sanitationContext.drawImage(
+      this._sanitationImg, 0, 0,
+      this._sanitationCanvas.width, this._sanitationCanvas.height
+    );
+    return this._sanitationCanvas.toDataURL();
+  }
+  sanitizeProfileFeatureVector(v) {
+    const a = Array.from(v);
+    if (!a.length === config.user.features.dims) {
+      return null;
+    }
+    let containsBadEntry = a.map((val) => {
+      return isNaN(val);
+    }).reduce((acc, val) => {
+      return acc || val;
+    });
+    if (containsBadEntry) {
+      return null;
+    }
+    return a;
   }
 }
 

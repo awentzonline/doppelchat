@@ -1,5 +1,6 @@
 import {EventEmitter} from 'events';
 import {markdown} from 'markdown';
+import ChatUserStore from './ChatUserStore';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 
 const CHANGE_EVENT = 'change';
@@ -29,17 +30,21 @@ class ChatStore extends EventEmitter {
     if (body) {
       body += ''; // strings, baby
       body = body.substr(0, 512)  // cut down on the funny business
-      body = markdown.toHTML(body);
+      // body = markdown.toHTML(body); // NOTE: maybe later
+      // make image good now
+      image = ChatUserStore.sanitizeProfileImage(image);
       if (image) {
-        // TODO: make image good now
+        featureVector = ChatUserStore.sanitizeProfileFeatureVector(featureVector);
+        if (featureVector) {
+          var item = {
+            peerId: message.peerId,
+            body: body,
+            image: image,
+            featureVector: featureVector
+          }
+          this.addItem(item);
+        }
       }
-      var item = {
-        peerId: message.peerId,
-        body: body,
-        image: image,
-        featureVector: featureVector
-      }
-      this.addItem(item);
     }
   }
   addItem(item) {

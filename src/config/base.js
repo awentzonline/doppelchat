@@ -3,6 +3,9 @@ export default {
     image: {
       width: 128,
       height: 128
+    },
+    features: {
+      dims: 10
     }
   }
 };
