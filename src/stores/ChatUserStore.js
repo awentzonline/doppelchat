@@ -38,14 +38,15 @@ class ChatUserStore extends EventEmitter {
     const {peerId} = message;
     let {image, featureVector} = message.data;
     featureVector = this.sanitizeProfileFeatureVector(featureVector);
-    image = this.sanitizeProfileImage(image);
-    if (image && featureVector) {
-      this.users[peerId] = {
-        peerId: peerId,
-        image: image,
-        featureVector: featureVector
-      };
-      this.emit(CHANGE_EVENT);
+    if (featureVector) {
+      this.sanitizeProfileImage(image, (goodImage) => {
+        this.users[peerId] = {
+          peerId: peerId,
+          image: goodImage,
+          featureVector: featureVector
+        };
+        this.emit(CHANGE_EVENT);
+      });
     }
   }
   removeUser(message) {
@@ -71,19 +72,22 @@ class ChatUserStore extends EventEmitter {
     var profile = this.getLocalProfile();
     return Math.sqrt(distance2To(otherFeatures, profile.featureVector));
   }
-  sanitizeProfileImage(imageSrc) {
+  sanitizeProfileImage(imageSrc, onSuccess) {
     // TODO: I'm not really sure of the best practices for this.
     // Ensure it's data, not script or an external url:
     if (imageSrc.indexOf('data:') != 0) {
       return null;
     }
-    this._sanitationImg.src = imageSrc;
-    // Enforce consistent dimensions:
-    this._sanitationContext.drawImage(
-      this._sanitationImg, 0, 0,
-      this._sanitationCanvas.width, this._sanitationCanvas.height
-    );
-    return this._sanitationCanvas.toDataURL();
+    const img = document.createElement('img');
+    img.onload = () => {
+      // Enforce consistent dimensions:
+      this._sanitationContext.drawImage(
+        img, 0, 0,
+        this._sanitationCanvas.width, this._sanitationCanvas.height
+      );
+      onSuccess(this._sanitationCanvas.toDataURL());
+    };
+    img.src = imageSrc;
   }
   sanitizeProfileFeatureVector(v) {
     let a = Array.from(v);

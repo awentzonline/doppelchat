@@ -34,19 +34,18 @@ class ChatStore extends EventEmitter {
       body = body.substr(0, config.chat.body.maxLength)  // cut down on the funny business
       // body = markdown.toHTML(body); // NOTE: maybe later
       // make image good now
-      image = ChatUserStore.sanitizeProfileImage(image);
-      if (image) {
+      image = ChatUserStore.sanitizeProfileImage(image, (goodImage) => {
         featureVector = ChatUserStore.sanitizeProfileFeatureVector(featureVector);
         if (featureVector) {
           var item = {
             peerId: message.peerId,
             body: body,
-            image: image,
+            image: goodImage,
             featureVector: featureVector
           }
           this.addItem(item);
         }
-      }
+      });
     }
   }
   addItem(item) {
