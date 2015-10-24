@@ -48,13 +48,17 @@ class ChatList extends React.Component {
 
 function renderItem(item) {
   let distance = ChatUserStore.getDistanceToLocal(item.featureVector);
+  //distance *= distance;
   const offsetX = distance * 100;
   //const offsetY = Math.max(0, Math.min(1, distance)) * 50;
   let scale = Math.max(0, 1 - distance);
-  scale *= scale;
+  if (distance > 0.2) {
+    scale *= scale;
+  }
   const itemStyles = {
     position: 'relative',
     left: `${offsetX}%`,
+    transformOrigin: 'left center',
     transform: `scale(${scale})`,
     height: `${scale * 92}px`
   }

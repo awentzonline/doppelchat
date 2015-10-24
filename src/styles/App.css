@@ -69,6 +69,11 @@ body {
   width: 100%;
 }
 
+.instructions {
+    right:20px;
+    position:absolute;
+}
+
 .chatList {
   position: relative;
 }

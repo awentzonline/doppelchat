@@ -17,8 +17,8 @@ class ImageClassifier {
     context.drawImage(canvas, 0, 0, scaledImage.width, scaledImage.height);
     let x = imageDataToVol(context.getImageData(0, 0, scaledImage.width, scaledImage.height));
     this.net.forward(x);
-    let layer = this.net.layers[this.net.layers.length - 1];
-    return layer.es;
+    let layer = this.net.layers[this.net.layers.length - 2];
+    return layer.out_act.w;
   }
   getCifar10Labels(y) {
     const classesTxt = ['airplane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'];

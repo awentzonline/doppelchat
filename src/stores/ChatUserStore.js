@@ -68,7 +68,7 @@ class ChatUserStore extends EventEmitter {
   }
   getDistanceToLocal(otherFeatures) {
     var profile = this.getLocalProfile();
-    return distance2To(otherFeatures, profile.featureVector);
+    return Math.sqrt(distance2To(otherFeatures, profile.featureVector));
   }
   sanitizeProfileImage(imageSrc) {
     // TODO: I'm not really sure of the best practices for this.
@@ -85,7 +85,7 @@ class ChatUserStore extends EventEmitter {
     return this._sanitationCanvas.toDataURL();
   }
   sanitizeProfileFeatureVector(v) {
-    const a = Array.from(v);
+    let a = Array.from(v);
     if (!a.length === config.user.features.dims) {
       return null;
     }
@@ -97,8 +97,28 @@ class ChatUserStore extends EventEmitter {
     if (containsBadEntry) {
       return null;
     }
+    a = normalize(a);
     return a;
   }
+}
+
+function normalize(a) {
+  let b = Array.from(a);
+  let d = vectorLength(a);
+  for (let i = 0, n = a.length; i < n; i++) {
+    b[i] = a[i] / d;
+  }
+  return b;
+}
+
+function vectorLength(a) {
+  let d = 0.0;
+  let di = 0;
+  for (let i = 0, n = a.length; i < n; i++) {
+    di = a[i];
+    d += di * di;
+  }
+  return Math.sqrt(d);
 }
 
 function distance2To(a, b) {

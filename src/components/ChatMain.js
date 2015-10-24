@@ -58,6 +58,7 @@ class ChatMain extends React.Component {
             </Paper>
           </div>
           <div className="col-md col-xs">
+            <p className="end-xs instructions">Become any image by clicking it</p>
             <CallList />
             <ChatInput />
             <ChatList />
