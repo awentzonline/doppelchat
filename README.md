@@ -17,8 +17,8 @@ connections and an index of peers.
 Image similarity
 ----------------
 [convnetjs](https://github.com/karpathy/convnetjs) is used to
-extract a feature vector from the user image. I'm using the
-[cifar10-solving CNN demo](http://cs.stanford.edu/people/karpathy/convnetjs/demo/cifar10.html)
+extract a feature vector from the user image. I'm using the demo
+[cifar10-solving CNN ](http://cs.stanford.edu/people/karpathy/convnetjs/demo/cifar10.html)
 with the 80% accurate pre-trained weights.
 
 UI
