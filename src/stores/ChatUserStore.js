@@ -58,7 +58,8 @@ class ChatUserStore extends EventEmitter {
     if (!profile) {
       profile = {
         image: questionMark,
-        featureVector: [0,0,0,0,0,0,0,0,0,0]
+        featureVector: [0,0,0,0,0,0,0,0,0,0],
+        anonymous: true
       };
     }
     return profile;
