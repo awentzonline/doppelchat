@@ -14,7 +14,8 @@ class PeerView extends React.Component {
     this.state = {
       profile: {
         image: questionMark,
-        featureVector: [0,0,0,0,0,0,0,0,0,0]
+        featureVector: [0,0,0,0,0,0,0,0,0,0],
+        anonymous: true
       }
     };
   }
@@ -34,7 +35,9 @@ class PeerView extends React.Component {
   }
   onAssumeFeatures() {
     const profile = ChatUserStore.getProfile(this.props.peerId);
-    PeerActions.updateUserImageFromURL(profile.image, profile.featureVector);
+    if (!profile.anonymous) {
+      PeerActions.updateUserImageFromURL(profile.image, profile.featureVector);
+    }
   }
   render() {
     const peerId = this.props.peerId;

@@ -37,6 +37,7 @@ export default class PeerActions {
     this.updateUserImageFromURL(imageCanvas.toDataURL(), featureVector);
   }
   static updateUserImageFromURL(imageUrl, features) {
+    features = Array.from(features);  // important
     const imageInfo = {
       image: imageUrl,
       featureVector: features
