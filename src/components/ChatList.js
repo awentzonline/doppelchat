@@ -56,7 +56,6 @@ function renderItem(item) {
     position: 'relative',
     left: `${offsetX}%`,
     transform: `scale(${scale})`,
-    width: `${scale * 100}%`,
     height: `${scale * 92}px`
   }
   function onImageClick() {
