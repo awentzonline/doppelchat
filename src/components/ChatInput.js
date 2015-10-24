@@ -1,9 +1,11 @@
 import React from 'react';
-
 import {TextField} from 'material-ui';
+
+import config from 'config';
 import ChatActions from 'actions/ChatActions';
 import PeerActions from 'actions/PeerActions';
 import ChatUserStore from 'stores/ChatUserStore';
+import RateLimiter from 'stores/RateLimiter';
 
 class ChatInput extends React.Component {
   constructor(props) {
@@ -55,10 +57,14 @@ class ChatInput extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     var text = this.state.text;
-    if (text) {
-      ChatActions.broadcastChat(text);
+    var rateKey = `chatMsg-local`;
+    if (!RateLimiter.shouldLimit(rateKey, config.chat.delay)) {
+      if (text) {
+        ChatActions.broadcastChat(text);
+      }
+      this.setState({text: ''});
+      RateLimiter.used(rateKey);
     }
-    this.setState({text: ''});
   }
 }
 

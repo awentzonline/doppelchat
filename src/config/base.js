@@ -11,7 +11,8 @@ export default {
   chat: {
     body: {
       maxLength: 256
-    }
+    },
+    delay: 1000
   },
   calls: {
     allowed: false

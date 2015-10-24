@@ -4,6 +4,7 @@ import {markdown} from 'markdown';
 import config from 'config';
 import ChatUserStore from './ChatUserStore';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
+import RateLimiter from 'stores/RateLimiter';
 
 const CHANGE_EVENT = 'change';
 const MAX_NUM_ITEMS = 2000;
@@ -23,7 +24,11 @@ class ChatStore extends EventEmitter {
   _handlePeerMessage(message) {
     switch (message.type) {
       case 'chat':
-        this.addChat(message);
+        let rateKey = `chatMsg-${message.peerId}`;
+        if (!RateLimiter.shouldLimit(rateKey, config.chat.delay)) {
+          this.addChat(message);
+          RateLimiter.used(rateKey);
+        }
         break;
     }
   }
