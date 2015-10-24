@@ -7,5 +7,10 @@ export default {
     features: {
       dims: 10
     }
+  },
+  chat: {
+    body: {
+      maxLength: 256
+    }
   }
 };

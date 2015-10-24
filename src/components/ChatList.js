@@ -41,12 +41,13 @@ function renderItem(item) {
   }
   return (
     <div className="row chatItem" style={itemStyles}>
-      <div className="col-xs-2">
-        <img src={item.image} />
-      </div>
       <div className="col-xs">
-        <div dangerouslySetInnerHTML={{__html: item.body}}>
+        <div className="chatImage">
+          <img src={item.image} />
         </div>
+        <p>
+          {item.body}
+        </p>
       </div>
     </div>
   );

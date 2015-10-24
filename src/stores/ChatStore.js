@@ -1,5 +1,7 @@
 import {EventEmitter} from 'events';
 import {markdown} from 'markdown';
+
+import config from 'config';
 import ChatUserStore from './ChatUserStore';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 
@@ -29,7 +31,7 @@ class ChatStore extends EventEmitter {
     let {body, image, featureVector} = message.data;
     if (body) {
       body += ''; // strings, baby
-      body = body.substr(0, 512)  // cut down on the funny business
+      body = body.substr(0, config.chat.body.maxLength)  // cut down on the funny business
       // body = markdown.toHTML(body); // NOTE: maybe later
       // make image good now
       image = ChatUserStore.sanitizeProfileImage(image);

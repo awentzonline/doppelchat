@@ -73,7 +73,18 @@ body {
   position: relative;
 }
 
+.chatItem p {
+  word-wrap: break-word;
+}
+
 .chatItem img {
   width: 100%;
   position: relative;
+
+}
+
+.chatItem .chatImage {
+  width: 92px;
+  float: left;
+  padding: 4px;
 }
