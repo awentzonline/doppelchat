@@ -1,9 +1,9 @@
 import {EventEmitter} from 'events';
 import Peer from 'peerjs';
 
+import config from 'config';
 import PeerActions from 'actions/PeerActions';
 import UserMediaStore from 'stores/UserMediaStore';
-import config from 'config';
 
 const Events = {
   CHANGE_EVENT: 'change',
@@ -66,6 +66,9 @@ class PeerManager extends EventEmitter {
       this.emit(Events.CHANGE_EVENT);
     });
     this.peer.on('call', (call) => {
+      if (!config.calls.allowed) {
+        return;
+      }
       if (UserMediaStore.stream) {
         call.answer(UserMediaStore.stream);
       } else {

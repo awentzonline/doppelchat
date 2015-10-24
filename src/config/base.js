@@ -12,5 +12,8 @@ export default {
     body: {
       maxLength: 256
     }
+  },
+  calls: {
+    allowed: false
   }
 };
