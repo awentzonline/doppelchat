@@ -38,13 +38,19 @@ class ChatMain extends React.Component {
       <div className="container-fluid layout">
         <div className="row localUserContainer">
           <div className="col-md-2 col-xs-2">
+            <Paper zDepth={5}>
+              <div className="row center-xs">
+                <div className="col-xs">
+                  <p>DoppelChat</p>
+                </div>
+              </div>
+            </Paper>
             <Paper zDepth={3}>
               <ImageInput
                   cropWidth={config.user.image.width}
                   cropHeight={config.user.image.height}
                 />
             </Paper>
-
             <Paper zDepth={3}>
               <P2PStatus />
               <PeerList />

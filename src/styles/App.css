@@ -16,6 +16,10 @@ body {
   min-width: 600px;
 }
 
+.appTitle {
+    float: right;
+}
+
 .connectedTo {
   padding: 4px;
 }
