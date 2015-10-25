@@ -13,8 +13,7 @@ import ChatInput from 'components/ChatInput';
 import ChatList from 'components/ChatList';
 import ImageInput from 'components/ImageInput';
 import P2PStatus from 'components/P2PStatus';
-import PeerList from 'components/PeerList';
-import PeerView from 'components/PeerView';
+import PeerImageList from 'components/PeerImageList';
 import UserVideoStream from 'components/UserVideoStream';
 import UserMediaStore from 'stores/UserMediaStore';
 
@@ -54,7 +53,7 @@ class ChatMain extends React.Component {
             </Paper>
             <Paper zDepth={3}>
               <P2PStatus />
-              <PeerList />
+              <PeerImageList />
             </Paper>
           </div>
           <div className="col-md col-xs">

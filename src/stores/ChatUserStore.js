@@ -19,6 +19,11 @@ class ChatUserStore extends EventEmitter {
   }
   dispatch(payload) {
     switch (payload.action) {
+      case 'connectionRemoved':
+        console.log(payload);
+        let {peerId} = payload.data;
+        this.removeUser(peerId);
+        break;
       case 'peerMsg':
         this._handlePeerMessage(payload.data);
         break;
@@ -26,9 +31,6 @@ class ChatUserStore extends EventEmitter {
   }
   _handlePeerMessage(message) {
     switch (message.type) {
-      case 'connectionRemoved':
-        this.removeUser(message);
-        break;
       case 'updateUserImage':
         this.updateUserImage(message);
         break;
@@ -38,10 +40,12 @@ class ChatUserStore extends EventEmitter {
     const {peerId} = message;
     let {image, featureVector} = message.data;
     featureVector = this.sanitizeProfileFeatureVector(featureVector);
+    let imageKey = featureVector.toString();
     if (featureVector) {
       this.sanitizeProfileImage(image, (goodImage) => {
         this.users[peerId] = {
           peerId: peerId,
+          imageKey: imageKey,
           image: goodImage,
           featureVector: featureVector
         };
@@ -49,10 +53,29 @@ class ChatUserStore extends EventEmitter {
       });
     }
   }
-  removeUser(message) {
-    const {peerId} = message.data;
+  removeUser(peerId) {
     delete this.users[peerId];
     this.emit(CHANGE_EVENT);
+  }
+  getGroupedProfiles() {
+    let groups = {};
+    Object.keys(this.users).forEach((key) => {
+      let val = this.users[key];
+      if (groups[val.imageKey]) {
+        groups[val.imageKey].count += 1;
+      } else {
+        groups[val.imageKey] = {
+          count: 1,
+          imageKey: val.imageKey,
+          image: val.image,
+          featureVector: val.featureVector
+        };
+      }
+    });
+    let sorted = Object.keys(groups)
+      .map((key) => { return groups[key]; })
+      .sort((a, b) => { return b.count - a.count; })
+    return sorted;
   }
   getProfile(peerId) {
     let profile = this.users[peerId];

@@ -21,7 +21,7 @@ class PeerView extends React.Component {
   }
   componentDidMount() {
     // HACK: just kick off a call automatically
-    PeerActions.makeCall(this.props.peerId, UserMediaStore.stream);
+    // PeerActions.makeCall(this.props.peerId, UserMediaStore.stream);
     this._onUserChange = this.onUserChange.bind(this);
     ChatUserStore.addListener('change', this._onUserChange);
   }
