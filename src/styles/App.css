@@ -16,6 +16,16 @@ body {
   min-width: 600px;
 }
 
+.navContainer {
+  min-width: 140px;
+  max-width: 200px;
+}
+
+.twitterLink {
+  font-weight: bold;
+  padding: 8px;
+}
+
 .appTitle {
     float: right;
 }

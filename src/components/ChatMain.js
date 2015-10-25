@@ -37,11 +37,26 @@ class ChatMain extends React.Component {
     return (
       <div className="container-fluid layout">
         <div className="row localUserContainer">
-          <div className="col-md-2 col-xs-2">
+          <div className="col-xs-2 navContainer">
             <Paper zDepth={5}>
               <div className="row center-xs">
                 <div className="col-xs">
-                  <p>DoppelChat</p>
+                  <p>
+                    DoppelChat
+                  </p>
+                  <div className="row center-xs">
+                    <div className="col-xs-6 center-xs">
+                      <a className="twitterLink twitter-share-button" href="https://twitter.com/share"
+                          data-url="http://doppelchat.com"
+                          data-text="DoppelChat: P2P chat clustered by images"
+                          data-via="awentzonline" data-count="none">
+                        Tweet
+                      </a>
+                    </div>
+                    <div className="col-xs-6 center-xs">
+                      <div className="fb-share-button" data-href="http://doppelchat.com" data-layout="button"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </Paper>
@@ -56,7 +71,7 @@ class ChatMain extends React.Component {
               <PeerImageList />
             </Paper>
           </div>
-          <div className="col-md col-xs">
+          <div className="col-xs">
             <p className="end-xs instructions">Become any image by clicking it</p>
             <CallList />
             <ChatInput />
