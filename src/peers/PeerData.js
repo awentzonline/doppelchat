@@ -129,7 +129,10 @@ class PeerData extends EventEmitter {
     var packet = [msgType, msg];
     var connection = this.dataConnections[peerId];
     if (connection) {
-      connection.send(packet);
+      try {
+        connection.send(packet);
+      } catch (error) {
+      }
     }
   }
   sendPeerListTo(peerId) {
