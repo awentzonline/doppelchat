@@ -1,6 +1,6 @@
 import {EventEmitter} from 'events';
 import config from 'config';
-import PeerData from 'sources/PeerData';
+import PeerData from 'peers/PeerData';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 import questionMark from '../images/qmark.png';
 

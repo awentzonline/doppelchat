@@ -1,7 +1,7 @@
 import React from 'react';
 import {Paper, FlatButton} from 'material-ui';
 
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import UserMediaActions from 'actions/UserMediaActions';
 import VideoStream from 'components/VideoStream';
 import UserMediaStore from 'stores/UserMediaStore';

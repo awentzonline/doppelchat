@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {TextField} from 'material-ui';
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 
 
 class AddPeerComponent extends React.Component {

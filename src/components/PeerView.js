@@ -1,7 +1,7 @@
 import React from 'react';
 import {Checkbox, Paper} from 'material-ui';
 
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import CallView from 'components/CallView';
 import VideoStream from 'components/VideoStream';
 import ChatUserStore from 'stores/ChatUserStore';

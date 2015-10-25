@@ -5,7 +5,7 @@ require('styles/App.css');
 import React from 'react';
 import {Dialog, FlatButton, Paper} from 'material-ui';
 
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import ChatMain from 'components/ChatMain';
 import config from 'config';
 

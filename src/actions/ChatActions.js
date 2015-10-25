@@ -1,4 +1,4 @@
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import ChatUserStore from 'stores/ChatUserStore';
 
 export default class ChatActions {

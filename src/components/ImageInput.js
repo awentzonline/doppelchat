@@ -5,7 +5,7 @@ import {Dialog, FlatButton, IconButton, Paper, TextField} from 'material-ui';
 import FileInput from 'react-file-input';
 
 import config from 'config';
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import ChatUserStore from 'stores/ChatUserStore';
 import questionMark from '../images/qmark.png';
 

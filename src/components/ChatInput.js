@@ -3,7 +3,7 @@ import {TextField} from 'material-ui';
 
 import config from 'config';
 import ChatActions from 'actions/ChatActions';
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import ChatUserStore from 'stores/ChatUserStore';
 import RateLimiter from 'stores/RateLimiter';
 

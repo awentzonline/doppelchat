@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlatButton, Paper} from 'material-ui';
 
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import VideoStream from 'components/VideoStream';
 
 class CallViewComponent extends React.Component {

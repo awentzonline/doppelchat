@@ -2,7 +2,7 @@ import React from 'react';
 import {Paper} from 'material-ui';
 
 import ChatStore from 'stores/ChatStore';
-import PeerActions from 'actions/PeerActions';
+import PeerActions from 'peers/PeerActions';
 import ChatUserStore from 'stores/ChatUserStore';
 
 class ChatList extends React.Component {

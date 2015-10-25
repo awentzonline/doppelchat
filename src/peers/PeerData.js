@@ -2,7 +2,7 @@ import {EventEmitter} from 'events';
 import Peer from 'peerjs';
 
 import config from 'config';
-import IncomingPeerActions from 'actions/IncomingPeerActions';
+import IncomingPeerActions from 'peers/IncomingPeerActions';
 import UserMediaStore from 'stores/UserMediaStore';
 
 const Events = {

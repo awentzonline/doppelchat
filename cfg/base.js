@@ -28,7 +28,8 @@ module.exports = {
       sources: srcPath + '/sources/',
       stores: srcPath + '/stores/',
       styles: srcPath + '/styles/',
-      dispatchers: srcPath + '/dispatchers/'
+      dispatchers: srcPath + '/dispatchers/',
+      peers: srcPath + '/peers/'
     }
   },
   module: {

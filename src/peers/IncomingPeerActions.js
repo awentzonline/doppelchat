@@ -2,8 +2,7 @@ import Dispatcher from 'dispatchers/DoppelDispatcher';
 
 import config from 'config';
 import ImageClassifier from 'sources/ImageClassifier';
-import PeerData from 'sources/PeerData';
-
+import PeerData from 'peers/PeerData';
 
 export default class IncomingPeerActions {
   static connectedToPeerServer() {
