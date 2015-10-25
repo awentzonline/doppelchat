@@ -6,6 +6,7 @@ import FileInput from 'react-file-input';
 
 import config from 'config';
 import PeerActions from 'peers/PeerActions';
+import CORSImage from 'sources/CORSImage';
 import ChatUserStore from 'stores/ChatUserStore';
 import questionMark from '../images/qmark.png';
 
@@ -14,7 +15,8 @@ class ImageInput extends React.Component {
     super(props);
     this.state = {
       originalImageSrc: questionMark,
-      imageSrc: questionMark
+      imageSrc: questionMark,
+      errorMessage: ''
     };
   }
   componentDidMount() {
@@ -28,11 +30,11 @@ class ImageInput extends React.Component {
     const profile = ChatUserStore.getLocalProfile();
     this.setState({
       imageSrc: profile.image,
-      originalImageSrc: this.state.originalImageSrc
+      originalImageSrc: this.state.originalImageSrc,
+      errorMessage: ''
     });
   }
   render() {
-    const errorMessage = '';
     let dialogActions = [
       <FlatButton label="Cancel"
           key={0}
@@ -78,6 +80,7 @@ class ImageInput extends React.Component {
               </form>
             </div>
           </div>
+          {this.state.errorMessage}
           <div className="col-xs center-xs">
             <Cropper
                 ref='cropper'
@@ -104,9 +107,19 @@ class ImageInput extends React.Component {
   }
   onURLSubmit(event) {
     event.preventDefault();
-    this.setState({
-      originalImageSrc: this.refs.url.getValue(),
-      imageSrc: this.state.imageSrc
+    let url = this.refs.url.getValue();
+    CORSImage.checkURL(url, () => {
+      this.setState({
+        originalImageSrc: url,
+        imageSrc: this.state.imageSrc,
+        errorMessage: ''
+      });
+    }, (err) => {
+      this.setState({
+        originalImageSrc: this.state.originalImageSrc,
+        imageSrc: this.state.imageSrc,
+        errorMessage: err
+      });
     });
   }
   onImageFileChanged(event) {
@@ -115,7 +128,8 @@ class ImageInput extends React.Component {
     var url = URL.createObjectURL(file);
     this.setState({
       originalImageSrc: url,
-      imageSrc: this.state.imageSrc
+      imageSrc: this.state.imageSrc,
+      errorMessage: ''
     });
   }
   onCancel() {
