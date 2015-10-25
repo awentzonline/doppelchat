@@ -2,7 +2,7 @@ import {EventEmitter} from 'events';
 import Peer from 'peerjs';
 
 import config from 'config';
-import PeerActions from 'actions/PeerActions';
+import IncomingPeerActions from 'actions/IncomingPeerActions';
 import UserMediaStore from 'stores/UserMediaStore';
 
 const Events = {
@@ -12,7 +12,7 @@ const Events = {
   PEER_MESSAGE: 'peerMsg'
 };
 
-class PeerManager extends EventEmitter {
+class PeerData extends EventEmitter {
   constructor() {
     super();
     this.Events = Events;
@@ -49,7 +49,7 @@ class PeerManager extends EventEmitter {
     this.peer.on('open', (id) => {
       // console.log('Your peer ID is: ' + id);
       this.connected = true;
-      PeerActions.connectedToPeerServer();
+      IncomingPeerActions.connectedToPeerServer();
       // Just connect to everyone on the server:
       this.peer.listAllPeers((peerIds) => {
         if (peerIds) {
@@ -145,12 +145,12 @@ class PeerManager extends EventEmitter {
     this.calls[peerId] = call;
     call.on('stream', (stream) => {
       console.log('stream added')
-      PeerActions.callAdded(call);
-      PeerActions.callStarted(peerId);
+      IncomingPeerActions.callAdded(call);
+      IncomingPeerActions.callStarted(peerId);
     });
     call.on('close', () => {
       delete this.calls[peerId];
-      PeerActions.callRemoved(peerId);
+      IncomingPeerActions.callRemoved(peerId);
       console.log('call removed')
     });
     call.on('error', (err) => {
@@ -169,12 +169,12 @@ class PeerManager extends EventEmitter {
     });
     dataConnection.on('open', () => {
       console.log(`${peerId} opened`);
-      PeerActions.connectionAdded(this.dataConnections[peerId]);
+      IncomingPeerActions.connectionAdded(this.dataConnections[peerId]);
     });
     dataConnection.on('close', () => {
       console.log(peerId + ' closed');
       delete this.dataConnections[peerId];
-      PeerActions.connectionRemoved(peerId)
+      IncomingPeerActions.connectionRemoved(peerId)
     });
     dataConnection.on('error', (err) => {
       console.log(`${peerId} error: ${err}`);
@@ -184,10 +184,10 @@ class PeerManager extends EventEmitter {
     });
   }
   _onIncomingPeerMessage(peerId, data, dataConnection) {
-    PeerActions.peerMsg(peerId, data, dataConnection);
+    IncomingPeerActions.peerMsg(peerId, data, dataConnection);
   }
 }
 
-const peers = new PeerManager();
+const peers = new PeerData();
 
 export default peers;
