@@ -7,7 +7,6 @@ import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 import RateLimiter from 'stores/RateLimiter';
 
 const CHANGE_EVENT = 'change';
-const MAX_NUM_ITEMS = 2000;
 
 class ChatStore extends EventEmitter {
   constructor() {
@@ -55,7 +54,7 @@ class ChatStore extends EventEmitter {
   }
   addItem(item) {
     this.items.unshift(item);
-    while(this.items.length > MAX_NUM_ITEMS) {
+    while(this.items.length > config.chat.maxItems) {
       this.items.pop();
     }
     this.emit(CHANGE_EVENT);

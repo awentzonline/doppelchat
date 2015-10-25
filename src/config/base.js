@@ -12,7 +12,8 @@ export default {
     body: {
       maxLength: 256
     },
-    delay: 1000
+    delay: 1000,
+    maxItems: 2000
   },
   calls: {
     allowed: false
