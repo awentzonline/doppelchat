@@ -119,7 +119,10 @@ class PeerData extends EventEmitter {
     // broadcast to peers
     Object.keys(this.dataConnections).forEach((name) => {
       var connection = this.dataConnections[name];
-      connection.send(packet);
+      try {
+        connection.send(packet);
+      } catch (error) {
+      }
     });
   }
   sendMessageToPeer(peerId, msgType, msg) {
