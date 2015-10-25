@@ -1,5 +1,6 @@
 export default {
   user: {
+    imageUpdateDelay: 500,
     image: {
       width: 128,
       height: 128

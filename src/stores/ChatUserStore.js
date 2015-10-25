@@ -1,6 +1,8 @@
 import {EventEmitter} from 'events';
+
 import config from 'config';
 import PeerData from 'peers/PeerData';
+import RateLimiter from 'stores/RateLimiter';
 import DoppelDispatcher from 'dispatchers/DoppelDispatcher';
 import questionMark from '../images/qmark.png';
 
@@ -31,7 +33,9 @@ class ChatUserStore extends EventEmitter {
   _handlePeerMessage(message) {
     switch (message.type) {
       case 'updateUserImage':
-        this.updateUserImage(message);
+        RateLimiter.attempt(`updateUserImage-${message.peerId}`, config.user.imageUpdateDelay, () => {
+          this.updateUserImage(message);
+        });
         break;
     }
   }

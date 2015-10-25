@@ -57,14 +57,12 @@ class ChatInput extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     var text = this.state.text;
-    var rateKey = `chatMsg-local`;
-    if (!RateLimiter.shouldLimit(rateKey, config.chat.delay)) {
+    RateLimiter.attempt(`chatMsg-local`, config.chat.delay, () => {
       if (text) {
         ChatActions.broadcastChat(text);
       }
       this.setState({text: ''});
-      RateLimiter.used(rateKey);
-    }
+    });
   }
 }
 

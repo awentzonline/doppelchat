@@ -14,6 +14,12 @@ class RateLimiter {
   used(key) {
     this.buckets[key] = new Date();
   }
+  attempt(key, delay, f) {
+    if (!this.shouldLimit(key, delay)) {
+      f();
+      this.used(key);
+    }
+  }
 }
 
 const rateLimiter = new RateLimiter();

@@ -23,11 +23,9 @@ class ChatStore extends EventEmitter {
   _handlePeerMessage(message) {
     switch (message.type) {
       case 'chat':
-        let rateKey = `chatMsg-${message.peerId}`;
-        if (!RateLimiter.shouldLimit(rateKey, config.chat.delay)) {
+        RateLimiter.attempt(`chatMsg-${message.peerId}`, config.chat.delay, () => {
           this.addChat(message);
-          RateLimiter.used(rateKey);
-        }
+        });
         break;
     }
   }
