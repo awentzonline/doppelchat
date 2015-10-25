@@ -20,7 +20,6 @@ class ChatUserStore extends EventEmitter {
   dispatch(payload) {
     switch (payload.action) {
       case 'connectionRemoved':
-        console.log(payload);
         let {peerId} = payload.data;
         this.removeUser(peerId);
         break;
