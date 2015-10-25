@@ -67,6 +67,15 @@ body {
 
 .peerView .userImage {
   width: 100%;
+  cursor: pointer;
+}
+
+.peerImage {
+  padding: 4px;
+  cursor: pointer;
+}
+.peerImage img {
+  width: 100%;
 }
 
 .instructions {
@@ -92,4 +101,5 @@ body {
   width: 92px;
   float: left;
   padding: 4px;
+  cursor: pointer;
 }

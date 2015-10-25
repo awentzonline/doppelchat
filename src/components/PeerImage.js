@@ -17,7 +17,7 @@ class PeerImage extends React.Component {
   }
   render() {
     return (
-      <div className="peerView" onClick={this.onAssumeFeatures.bind(this)}>
+      <div className="peerImage" onClick={this.onAssumeFeatures.bind(this)}>
         <img className="userImage"
             src={this.props.image} />
       </div>
