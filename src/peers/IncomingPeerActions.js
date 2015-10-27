@@ -25,7 +25,7 @@ export default class IncomingPeerActions {
          profile.image, profile.featureVector, connection.peer
        );
      }
-     ChatActions.sendRecentChats(connection.peer);
+    // ChatActions.sendRecentChats(connection.peer);
   }
   static connectionRemoved(peerId) {
      dispatch('connectionRemoved', {
