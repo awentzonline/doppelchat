@@ -1,6 +1,7 @@
 import Dispatcher from 'dispatchers/DoppelDispatcher';
 
 import config from 'config';
+import ChatActions from 'actions/ChatActions';
 import ImageClassifier from 'sources/ImageClassifier';
 import ChatUserStore from 'stores/ChatUserStore';
 import PeerActions from 'peers/PeerActions';
@@ -24,6 +25,7 @@ export default class IncomingPeerActions {
          profile.image, profile.featureVector, connection.peer
        );
      }
+    // ChatActions.sendRecentChats(connection.peer);
   }
   static connectionRemoved(peerId) {
      dispatch('connectionRemoved', {

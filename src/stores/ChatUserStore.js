@@ -94,6 +94,9 @@ class ChatUserStore extends EventEmitter {
   getLocalProfile() {
     return this.getProfile(PeerData.peer.id);
   }
+  getLocalPeerId() {
+    return PeerData.peer.id;
+  }
   getDistanceToLocal(otherFeatures) {
     var profile = this.getLocalProfile();
     return Math.sqrt(distance2To(otherFeatures, profile.featureVector));

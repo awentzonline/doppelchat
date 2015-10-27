@@ -60,6 +60,18 @@ class ChatStore extends EventEmitter {
   getChatItems() {
     return this.items;
   }
+  getRecentChats(peerId) {
+    const maxRecent = 10;
+    const chatItems = this.getChatItems();
+    let result = [];
+    for (let i = 0, len = chatItems.length; i < len && result.length < maxRecent; i++) {
+      var chat = chatItems[i];
+      if (chat.peerId == peerId) {
+        result.push(chat);
+      }
+    }
+    return result;
+  }
 }
 
 var store = new ChatStore();
