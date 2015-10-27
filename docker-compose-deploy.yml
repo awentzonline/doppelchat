@@ -1,5 +1,5 @@
 peerserver:
-  image: awentzonline/doppelchat_peerserver
+  image: awentzonline/doppelchat-peerserver
   restart: always
   ports:
     - "80:80"
