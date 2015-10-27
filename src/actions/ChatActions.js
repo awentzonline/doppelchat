@@ -1,4 +1,6 @@
+import config from 'config';
 import PeerActions from 'peers/PeerActions';
+import ChatStore from 'stores/ChatStore';
 import ChatUserStore from 'stores/ChatUserStore';
 
 export default class ChatActions {
@@ -31,14 +33,18 @@ export default class ChatActions {
     const localPeerId = ChatUserStore.getLocalPeerId();
     const recentChats = ChatStore.getRecentChats(localPeerId);
     // trickle them out
+    if (recentChats.length) {
+      trickleChat(recentChats);
+    }
     function trickleChat(remainingChats) {
-      const chat = remainingChats.unshift();
+      const chat = remainingChats.pop();
       ChatActions.chatToPeerFromChat(toPeer, chat);
-      if (remainingChats) {
+      if (remainingChats.length > 0) {
         setTimeout(() => {
           trickleChat(remainingChats);
         }, config.chat.delay + 20);
       }
     }
+
   }
 }
