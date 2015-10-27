@@ -63,7 +63,7 @@
     "less-loader": "^2.0.0",
     "lodash": "^3.10.1",
     "markdown": "^0.5.0",
-    "material-ui": "^0.12.4",
+    "material-ui": "^0.13.0",
     "normalize.css": "^3.0.3",
     "peer": "peers/peerjs-server#master",
     "peerjs": "^0.3.14",
