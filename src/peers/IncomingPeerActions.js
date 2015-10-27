@@ -2,6 +2,8 @@ import Dispatcher from 'dispatchers/DoppelDispatcher';
 
 import config from 'config';
 import ImageClassifier from 'sources/ImageClassifier';
+import ChatUserStore from 'stores/ChatUserStore';
+import PeerActions from 'peers/PeerActions';
 import PeerData from 'peers/PeerData';
 
 export default class IncomingPeerActions {
@@ -15,6 +17,13 @@ export default class IncomingPeerActions {
      dispatch('connectionAdded', {
        connection: connection
      });
+     // HACK: just want to get this going
+     const profile = ChatUserStore.getLocalProfile();
+     if (!profile.anonymous) {
+       PeerActions.updateUserImageFromURL(
+         profile.image, profile.featureVector, connection.peer
+       );
+     }
   }
   static connectionRemoved(peerId) {
      dispatch('connectionRemoved', {

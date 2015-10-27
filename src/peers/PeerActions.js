@@ -30,17 +30,26 @@ export default class PeerActions {
     //console.log(`Broadcasting ${type} ${data}`);
     PeerData.broadcast(type, data);
   }
+  static sendMessageToPeer(peerId, type, data) {
+    PeerData.sendMessageToPeer(peerId, type, data);
+  }
   static updateUserImage(imageCanvas) {
     let featureVector = ImageClassifier.classify(imageCanvas);
     // console.log(ImageClassifier.getCifar10Labels(featureVector));
     this.updateUserImageFromURL(imageCanvas.toDataURL(), featureVector);
   }
-  static updateUserImageFromURL(imageUrl, features) {
+  static updateUserImageFromURL(imageUrl, features, toPeer) {
     features = Array.from(features);  // important
-    const imageInfo = {
-      image: imageUrl,
-      featureVector: features
-    };
-    PeerData.broadcast('updateUserImage', imageInfo);
+    if (features) {
+      const imageInfo = {
+        image: imageUrl,
+        featureVector: features
+      };
+      if (toPeer) {
+        this.sendMessageToPeer(toPeer, 'updateUserImage', imageInfo);
+      } else {
+        this.broadcast('updateUserImage', imageInfo);
+      }
+    }
   }
 };
