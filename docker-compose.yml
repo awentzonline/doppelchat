@@ -1,6 +1,7 @@
 peerserver:
   build: .
-  dockerfile: Dockerfile.server
+  restart: always
+  dockerfile: Dockerfile
   ports:
     - "80:80"
   environment:
