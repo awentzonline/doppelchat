@@ -1,6 +1,7 @@
 import React from 'react';
 import {Paper} from 'material-ui';
 
+import PeerImage from 'components/PeerImage';
 import ChatStore from 'stores/ChatStore';
 import PeerActions from 'peers/PeerActions';
 import ChatUserStore from 'stores/ChatUserStore';
@@ -48,7 +49,7 @@ class ChatList extends React.Component {
 
 function renderItem(item) {
   let distance = ChatUserStore.getDistanceToLocal(item.featureVector);
-  distance = Math.pow(distance, 2);
+  distance = Math.pow(distance, 3);
   const offsetX = distance * 100;
   //const offsetY = Math.max(0, Math.min(1, distance)) * 50;
   let scale = Math.max(0, 1 - distance);
@@ -65,18 +66,20 @@ function renderItem(item) {
   function onImageClick() {
     PeerActions.updateUserImageFromURL(item.image, item.featureVector);
   }
-  return (
-    <div className="row chatItem" style={itemStyles} key={item.clientId}>
-      <div className="col-xs">
-        <div className="chatImage" onClick={onImageClick}>
-          <img src={item.image} />
+  if (scale > 0.001) {
+    return (
+      <div className="row chatItem" style={itemStyles} key={item.clientId}>
+        <div className="row">
+          <PeerImage image={item.image} featureVector={item.featureVector} />
+          <p>
+            {item.body}
+          </p>
         </div>
-        <p>
-          {item.body}
-        </p>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return null;
+  }
 }
 
 export default ChatList;
