@@ -48,7 +48,7 @@ class ChatList extends React.Component {
 
 function renderItem(item) {
   let distance = ChatUserStore.getDistanceToLocal(item.featureVector);
-  distance = Math.pow(distance, 3);
+  distance = Math.pow(distance, 2);
   const offsetX = distance * 100;
   //const offsetY = Math.max(0, Math.min(1, distance)) * 50;
   let scale = Math.max(0, 1 - distance);
@@ -66,7 +66,7 @@ function renderItem(item) {
     PeerActions.updateUserImageFromURL(item.image, item.featureVector);
   }
   return (
-    <div className="row chatItem" style={itemStyles}>
+    <div className="row chatItem" style={itemStyles} key={item.clientId}>
       <div className="col-xs">
         <div className="chatImage" onClick={onImageClick}>
           <img src={item.image} />

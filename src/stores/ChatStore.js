@@ -12,6 +12,7 @@ class ChatStore extends EventEmitter {
   constructor() {
     super();
     this.items = [];
+    this.nextClientId = 1;
   }
   dispatch(payload) {
     switch (payload.action) {
@@ -39,6 +40,7 @@ class ChatStore extends EventEmitter {
           featureVector = ChatUserStore.sanitizeProfileFeatureVector(featureVector);
           if (featureVector) {
             var item = {
+              clientId: this.nextClientId++,
               peerId: message.peerId,
               body: body,
               image: goodImage,
