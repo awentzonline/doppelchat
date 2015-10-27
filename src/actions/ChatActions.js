@@ -22,11 +22,12 @@ export default class ChatActions {
       featureVector: featureVector
     });
   }
-  static chatToPeerFromChat(toPeer, chat) {
+  static chatCatchupToPeer(toPeer, chat) {
     PeerActions.sendMessageToPeer(toPeer, 'chat', {
       body: chat.body,
       image: chat.image,
-      featureVector: chat.featureVector
+      featureVector: chat.featureVector,
+      catchup: true
     });
   }
   static sendRecentChats(toPeer) {
@@ -38,7 +39,7 @@ export default class ChatActions {
     }
     function trickleChat(remainingChats) {
       const chat = remainingChats.pop();
-      ChatActions.chatToPeerFromChat(toPeer, chat);
+      ChatActions.chatCatchupToPeer(toPeer, chat);
       if (remainingChats.length > 0) {
         setTimeout(() => {
           trickleChat(remainingChats);
