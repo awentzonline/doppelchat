@@ -56,6 +56,9 @@ function renderItem(item) {
   // if (distance > 0.2) {
   //   scale *= scale;
   // }
+  if (scale <= 0.01) {
+    return false;
+  }
   const itemStyles = {
     position: 'relative',
     left: `${offsetX}%`,
@@ -66,20 +69,16 @@ function renderItem(item) {
   function onImageClick() {
     PeerActions.updateUserImageFromURL(item.image, item.featureVector);
   }
-  if (scale > 0.001) {
-    return (
-      <div className="row chatItem" style={itemStyles} key={item.clientId}>
-        <div className="row">
-          <PeerImage image={item.image} featureVector={item.featureVector} />
-          <p>
-            {item.body}
-          </p>
-        </div>
+  return (
+    <div className="row chatItem" style={itemStyles} key={item.clientId}>
+      <div className="row">
+        <PeerImage image={item.image} featureVector={item.featureVector} />
+        <p>
+          {item.body}
+        </p>
       </div>
-    );
-  } else {
-    return null;
-  }
+    </div>
+  );
 }
 
 export default ChatList;
