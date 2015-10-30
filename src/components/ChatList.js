@@ -73,7 +73,7 @@ function renderItem(item) {
     <div className="row chatItem" style={itemStyles} key={item.clientId}>
       <div className="row">
         <PeerImage image={item.image} featureVector={item.featureVector} />
-        <p>
+        <p className="col-xs">
           {item.body}
         </p>
       </div>
